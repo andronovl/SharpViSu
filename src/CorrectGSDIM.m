@@ -22,7 +22,7 @@ function varargout = CorrectGSDIM(varargin)
 
 % Edit the above text to modify the response to help CorrectGSDIM
 
-% Last Modified by GUIDE v2.5 14-Jan-2015 14:28:37
+% Last Modified by GUIDE v2.5 21-Jan-2015 15:32:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1180,3 +1180,12 @@ function checkbox24_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of checkbox24
+
+
+% --- Executes on button press in checkbox21.
+function checkbox21_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox21 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox21

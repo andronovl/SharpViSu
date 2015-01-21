@@ -527,40 +527,40 @@ if ~isempty(Anew{1}) || ~isempty(Anew{2})
         end
     end
 end
-% save the scatter plot
-
-pathname = handles.folder;
-FPName = [pathname 'scatter_for fitting.png'];
-h2 = figure('visible', 'off');
-
-
-
-hold on
-% if ~isempty (Anew{1})
-% scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, 50, 'xr', 'MarkerFaceColor', 'r');
-% scatter(Bnew{1}(:,1)/1000, Bnew{1}(:,2)/1000, 50, 'xg', 'MarkerFaceColor', 'g');
+% % save the scatter plot
+% 
+% pathname = handles.folder;
+% FPName = [pathname 'scatter_for fitting.png'];
+% h2 = figure('visible', 'off');
+% 
+% 
+% 
+% hold on
+% % if ~isempty (Anew{1})
+% % scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, 50, 'xr', 'MarkerFaceColor', 'r');
+% % scatter(Bnew{1}(:,1)/1000, Bnew{1}(:,2)/1000, 50, 'xg', 'MarkerFaceColor', 'g');
+% % end
+% if ~isempty (Anew{2})
+% scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, 500, '+r', 'MarkerFaceColor', 'r', 'LineWidth', 1.5);
+% scatter(Bnew{2}(:,1)/1000, Bnew{2}(:,2)/1000, 500, 'xg', 'MarkerFaceColor', 'g', 'LineWidth', 1.5);
 % end
-if ~isempty (Anew{2})
-scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, 500, '+r', 'MarkerFaceColor', 'r', 'LineWidth', 1.5);
-scatter(Bnew{2}(:,1)/1000, Bnew{2}(:,2)/1000, 500, 'xg', 'MarkerFaceColor', 'g', 'LineWidth', 1.5);
-end
-hold off
-
-
-xlabel('X, µm', 'FontSize', 18);
-ylabel('Y, µm', 'FontSize', 18);
-set(gca, 'xaxislocation', 'top', 'ydir', 'reverse', 'FontSize', 18, 'LineWidth', 0.5, 'DataAspectRatio', [1 1 1], 'XLim', [0 fov], 'YLim', [0 fov], 'XTick', [0 6 12 18], 'YTick', [0 6 12 18]);
-%axis(gca, [0 fov 0 fov]);
-box on;
-myStyle = hgexport('factorystyle');
-myStyle.Format = 'png';
-myStyle.Width = 6;
-myStyle.Height = 6;
-myStyle.Resolution = 300;
-myStyle.Units = 'inch';
-myStyle.FixedFontSize = 8;
-hgexport(h2, FPName, myStyle, 'Format', 'png');
-close(h2);
+% hold off
+% 
+% 
+% xlabel('X, µm', 'FontSize', 18);
+% ylabel('Y, µm', 'FontSize', 18);
+% set(gca, 'xaxislocation', 'top', 'ydir', 'reverse', 'FontSize', 18, 'LineWidth', 0.5, 'DataAspectRatio', [1 1 1], 'XLim', [0 fov], 'YLim', [0 fov], 'XTick', [0 6 12 18], 'YTick', [0 6 12 18]);
+% %axis(gca, [0 fov 0 fov]);
+% box on;
+% myStyle = hgexport('factorystyle');
+% myStyle.Format = 'png';
+% myStyle.Width = 6;
+% myStyle.Height = 6;
+% myStyle.Resolution = 300;
+% myStyle.Units = 'inch';
+% myStyle.FixedFontSize = 8;
+% hgexport(h2, FPName, myStyle, 'Format', 'png');
+% close(h2);
 
 elseif get(handles.radiobutton2, 'Value') % if show vectors
 

@@ -273,6 +273,7 @@ GetSlices(hObject, handles);
 
 function GetSlices(hObject, handles)
 % calculates Z-stack from eventlist
+
 AB = handles.AB;
 pixsizexy = str2double(get(handles.edit9, 'String'));
 pixsizez = str2double(get(handles.edit8, 'String'));
@@ -292,6 +293,10 @@ end
 end
 handles.I0 = I;
 handles.pixelsize = pixsizexy;
+
+% reset the current slice to 1
+set(handles.edit3, 'String', num2str(1));
+
 % set slider properties
 slider_min = 1;
 slider_max = NZ;
