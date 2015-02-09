@@ -9,6 +9,6 @@ Download and run “Installer/CorrectGSDIM_web_installer.exe” and follow instr
 If MATLAB Compiler Runtime R2014a is already installed on your computer, you can use the portable version of CorrectGSDIM: download file "Portable/CorrectGSDIM.zip" and unpack it to a preferred location.
 
 <i> Matlab code. </i>
-Add folder “src” to the search directory of Matlab. The code was tested and compiled in Matlab R2014a. 
+Add folder “CorrectGSDIM” to the search directory of Matlab. The code was tested and compiled in Matlab R2014a. 
 
 Further instructions are present in the file "CorrectGSDIM user manual.pdf"
