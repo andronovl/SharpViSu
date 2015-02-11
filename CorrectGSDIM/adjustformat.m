@@ -59,7 +59,28 @@ elseif format == 3 %RapidSTORM
            ev = ev + 1;
         end
     end
-%elseif format == 4
+elseif format == 4 %Localization microscopy of µManager
+    A((A(:,8)>10^6|A(:,8)<10),:) = [];%cut events with >10^6 or <10 photons
+    Anew = zeros(size(A,1),9);
+    Anew(:,4:5) = A(:,6:7); %X,Y in nm
+    Anew(:,7) = A(:,8); %intensity (convert to photons???)
+    Anew(:,2) = A(:,3); %frameID
+    A = sortrows(Anew);
+    fr = A(1,2);
+    ev = 1;
+    %new eventIDs
+    for i = 1:size(A,1)
+        if A(i,2) == fr
+           A(i,3) = ev;
+           ev = ev + 1;
+        else
+           ev = 1;
+           fr = A(i,2);
+           A(i,3) = ev;
+           ev = ev + 1;
+        end
+    end
+end
 
 % % FALCON
 %     Anew = zeros(size(A,1),9);

@@ -88,6 +88,8 @@ format = get(handles.popupmenu21, 'Value');
     extension = '*.*';
 if format == 1 % set eventlist extension depending on format
     extension = '*.ascii';
+elseif format == 4 % set eventlist extension depending on format
+    extension = '*.txt';
 end
 if isfield(handles, 'folder')
     pathname = handles.folder;
@@ -96,6 +98,12 @@ else
 [filenameA, pathnameA] = uigetfile({extension}, '642 eventlist');
 end
 if pathnameA ~= 0
+    if format == 4 % µManager: convert commas to dots
+        file    = memmapfile([pathnameA filenameA], 'writable', true );
+        comma   = uint8(',');
+        point   = uint8('.');
+        file.Data( transpose( file.Data==comma) ) = point;
+    end
 A = importdata([pathnameA filenameA]);
 pfname = [pathnameA filenameA];
 %cd(pathnameB);
@@ -105,7 +113,7 @@ if isstruct(A)
 A = A.data;
 end
 
-if format ~= 4
+if format ~= 5
 A = adjustformat(A, format);    % adjust the format to the standard
 end    
 
@@ -180,6 +188,8 @@ format = get(handles.popupmenu21, 'Value');
     extension = '*.*';
 if format == 1 % set eventlist extension depending on format
     extension = '*.ascii';
+elseif format == 4 % set eventlist extension depending on format
+    extension = '*.txt';
 end
 if isfield(handles, 'folder')
     pathname = handles.folder;
@@ -187,17 +197,26 @@ if isfield(handles, 'folder')
 else
     [filenameB, pathnameB] = uigetfile({extension}, '488 eventlist');
 end
-if filenameB ~= 0
-B = importdata([pathnameB filenameB]); % import eventlist 488
+
+if pathnameB ~= 0
+    if format == 4 % µManager: convert commas to dots
+        file    = memmapfile([pathnameB filenameB], 'writable', true );
+        comma   = uint8(',');
+        point   = uint8('.');
+        file.Data( transpose( file.Data==comma) ) = point;
+    end
+B = importdata([pathnameB filenameB]);
 pfname = [pathnameB filenameB];
+%cd(pathnameB);
 set (handles.edit3, 'String' , pfname);
-handles.folder = pathnameB;
 
 if isstruct(B)
 B = B.data;
 end
 
-B = adjustformat(B, format);% adjust the format to the standard
+if format ~= 5
+B = adjustformat(B, format);    % adjust the format to the standard
+end    
 
 handles.AB{2} = B;
 else
@@ -667,10 +686,20 @@ function pushbutton43_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 A = handles.ABcorr{1};
 pathname = handles.folder;
-[FileName,PathName] = uiputfile({'*.ascii'}, '647 corrected eventlist', pathname);
-if FileName ~= 0
-FPName=[PathName FileName];
-dlmwrite(FPName, A);
+[FileName,PathName,FilterIndex] = uiputfile( ...
+{'*.ascii', 'CorrectGSDIM (*.ascii)';...
+ '*.2d', 'ViSP 2D File (*.2d)';...
+ '*.2dlp', 'ViSP 2D Localization Precision File (*.2dlp)';...
+ '*.3d', 'ViSP 3D File (*.3d)';...
+ '*.3dlp', 'ViSP 3D Localization Precision File (*.3dlp)'},...
+ '647 corrected eventlist', pathname);
+if FilterIndex ~= 0
+    FPName=[PathName FileName];
+    if FilterIndex == 1
+        dlmwrite(FPName, A, '\t');
+    else
+        SaveViSP( A, FilterIndex - 1, FPName );
+    end
 end
 
 % --- Executes on button press in pushbutton42.
@@ -680,10 +709,20 @@ function pushbutton42_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 A = handles.ABcorr{2};
 pathname = handles.folder;
-[FileName,PathName] = uiputfile({'*.ascii'}, '488 corrected eventlist', pathname);
-if FileName ~= 0
-FPName=[PathName FileName];
-dlmwrite(FPName, A);
+[FileName,PathName,FilterIndex] = uiputfile( ...
+{'*.ascii', 'CorrectGSDIM (*.ascii)';...
+ '*.2d', 'ViSP 2D File (*.2d)';...
+ '*.2dlp', 'ViSP 2D Localization Precision File (*.2dlp)';...
+ '*.3d', 'ViSP 3D File (*.3d)';...
+ '*.3dlp', 'ViSP 3D Localization Precision File (*.3dlp)'},...
+ '488 corrected eventlist', pathname);
+if FilterIndex ~= 0
+    FPName=[PathName FileName];
+    if FilterIndex == 1
+        dlmwrite(FPName, A, '\t');
+    else
+        SaveViSP( A, FilterIndex - 1, FPName );
+    end
 end
 
 
@@ -745,7 +784,7 @@ end
 end
 handles.ABcorr = ABcorr;
 set(handles.checkbox24, 'Value', 1);
-if ~isnan(offsetAB{1}) | ~isnan(offsetAB{2})
+if ~isnan(offsetAB{1}(1,1)) | ~isnan(offsetAB{2}(1,1))
 handles = pushbutton17_Callback(hObject, eventdata, handles);
 end
 waitbar(j/max(iter));
