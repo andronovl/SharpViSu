@@ -33,10 +33,10 @@ Fs12 = fftshift(single(fft2(I12)));
 [rr, cc] = meshgrid(1:fov/pix);
 t = sqrt((rr-fov/(2*pix)).^2+(cc-fov/(2*pix)).^2);
 t2 = (fov/(2*pix)) / n;
-t3 = n /(fov/(2*pix));
+%t3 = n /(fov/(2*pix));
 FRC = zeros(1, n);
 for i = 1:n
-C1 = t <= t2 * (i - t3);
+C1 = t <= t2 * (i - 1);
 C2 = t <= t2 * i;
 C3 = C2 - C1;
 Fs11c = Fs11 .* C3;

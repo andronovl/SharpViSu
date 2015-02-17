@@ -22,7 +22,7 @@ function [varargout] = contrastenh(varargin)
 
 % Edit the above text to modify the response to help contrastenh
 
-% Last Modified by GUIDE v2.5 27-Jan-2015 17:52:11
+% Last Modified by GUIDE v2.5 16-Feb-2015 10:17:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -202,6 +202,17 @@ UpdateImage(hObject, handles);
 
 function UpdateImage(hObject, handles)
 
+monochr = get(handles.checkbox11, 'Value');
+if monochr
+    %set(handles.popupmenu2, 'Value', 3); % set string to gray
+    set(handles.popupmenu2, 'Enable', 'off');
+    %set(handles.popupmenu3, 'Value', 3); % set string to gray
+    set(handles.popupmenu3, 'Enable', 'off');
+else
+    set(handles.popupmenu2, 'Enable', 'on');
+    set(handles.popupmenu3, 'Enable', 'on');
+end
+
 norm = get(handles.checkbox9, 'Value');
 mult0(1) = str2double(get(handles.edit3, 'String'));
 mult0(2) = str2double(get(handles.edit4, 'String'));
@@ -234,9 +245,12 @@ end
 
 I = cell(2,1);
 RGB0 = cell(2,1);
+RGB0sh = cell(2,1);
 map = cell(2,1);
 for i = 1 : 2
     I{i} = I1{i} * mult(i);
+    I{i} = round(I{i});
+  if ~monochr
     if strcmp(mapstr{i}, 'red')
         map{i} = [(0:255)', zeros(256,2)]/255;
     elseif strcmp(mapstr{i}, 'green')
@@ -270,18 +284,27 @@ for i = 1 : 2
     elseif strcmp(mapstr{i}, 'pink')
         map{i} = pink(256);
     end
-    I{i} = round(I{i});
-    RGB0{i} = ind2rgb(I{i}, map{i});
+        RGB0{i} = ind2rgb(I{i}, map{i});
+        RGB0sh{i} = ind2rgb(I{i}, map{i});
+  else
+        map{i} = gray(256);
+        RGB0{i} = I{i};
+        RGB0sh{i} = ind2rgb(I{i}, map{i});
+   end
 end
 RGB = RGB0{1} + RGB0{2};
-RGB(RGB > 1) = 1;
-
+RGBsh = RGB0sh{1} + RGB0sh{2};
+if ~monochr
+    RGB(RGB > 1) = 1;
+else
+    RGB(RGB > 255) = 255;
+end
 iptsetpref('ImshowAxesVisible','on');
 if show ~= 3
     imshow(I{show}, map{show}, 'Parent', handles.axes1, 'XData', [0, size(I{show},2) * p * 0.001], 'YData', [0, size(I{show},1) * p * 0.001]);
     set(handles.axes1,'XTickLabel',[], 'XTick',[], 'FontSize', 10);
 else
-   imshow(RGB, 'Parent', handles.axes1, 'XData', [0, size(I{1},2) * p * 0.001], 'YData', [0, size(I{1},1) * p * 0.001]);
+   imshow(RGBsh, 'Parent', handles.axes1, 'XData', [0, size(I{1},2) * p * 0.001], 'YData', [0, size(I{1},1) * p * 0.001]);
    set(handles.axes1,'XTickLabel',[], 'XTick',[], 'FontSize', 10);
 end
 if list
@@ -505,6 +528,11 @@ draworig = get(handles.radiobutton3, 'Value');
 drawcorr = get(handles.radiobutton2, 'Value');
 p0 = handles.pixsize0;
 p1 = handles.pixsize1;
+% if mode == 2
+%     set(handles.edit6, 'Enable', 'on');
+% else
+%     set(handles.edit6, 'Enable', 'off');
+% end
 if mode == 2 && draworig && p0(2) ~= 0 %gauss
     set(handles.edit5, 'String', num2str(p0(2)));
 elseif mode == 2 && drawcorr && p1(2) ~= 0 %gauss
@@ -538,6 +566,15 @@ end
 % --- Executes on button press in checkbox9.
 function checkbox9_Callback(hObject, eventdata, handles)
 % hObject    handle to checkbox9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+UpdateImage(hObject, handles);
+
+
+% --- Executes on button press in checkbox11.
+function checkbox11_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
