@@ -22,7 +22,7 @@ function varargout = SharpViSu(varargin)
 
 % Edit the above text to modify the response to help SharpViSu
 
-% Last Modified by GUIDE v2.5 29-Sep-2015 15:39:22
+% Last Modified by GUIDE v2.5 20-Jan-2016 16:44:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,6 +84,8 @@ function A = pushbutton13_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 format = get(handles.popupmenu21, 'Value');
     extension = '*.*';
 if format == 1 % set eventlist extension depending on format
@@ -173,9 +175,15 @@ handles = rmfield(handles,'Ripley');
 end
 cla(handles.axes2); %clear the drift axes
 cla(handles.axes3); %clear the drift axes
+set (handles.text83, 'String' , '—'); %clear the resolution
+set (handles.text81, 'String' , '—'); %clear the resolution
 handles.FOV = FOV(handles.AB);
 set(handles.edit56, 'String', handles.FOV/1000);
 guidata(hObject,handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -184,6 +192,8 @@ function pushbutton14_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton14 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 format = get(handles.popupmenu21, 'Value');
     extension = '*.*';
 if format == 1 % set eventlist extension depending on format
@@ -273,9 +283,15 @@ handles = rmfield(handles,'Ripley');
 end
 cla(handles.axes2); %clear the drift axes
 cla(handles.axes3); %clear the drift axes
+set (handles.text83, 'String' , '—'); %clear the resolution
+set (handles.text81, 'String' , '—'); %clear the resolution
 handles.FOV = FOV(handles.AB);
 set(handles.edit56, 'String', handles.FOV/1000);
 guidata(hObject,handles);
+
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --- Executes on button press in pushbutton17.
@@ -283,6 +299,7 @@ function [handles] = pushbutton17_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton17 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 
 method = get(handles.popupmenu23, 'Value');
 stringsteps642 = get(handles.edit28, 'string');
@@ -399,6 +416,14 @@ handles.offsetAB = offsetAB;
 guidata(hObject,handles);
 
 
+if isempty(handles.AB{1}) && isempty(handles.AB{2})
+    h = errordlg('Please load data first','No data');
+end
+
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 
 % --- Executes on button press in pushbutton18.
@@ -490,7 +515,11 @@ function pushbutton21_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton21 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 contrastenh(handles.AB, handles.ABcorr, handles.folder);
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -500,6 +529,8 @@ function pushbutton43_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton43 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 A = handles.ABcorr{1};
 pathname = handles.folder;
 [FileName,PathName,FilterIndex] = uiputfile( ...
@@ -518,11 +549,17 @@ if FilterIndex ~= 0
     end
 end
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 % --- Executes on button press in pushbutton42.
 function pushbutton42_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton42 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 A = handles.ABcorr{2};
 pathname = handles.folder;
 [FileName,PathName,FilterIndex] = uiputfile( ...
@@ -541,12 +578,18 @@ if FilterIndex ~= 0
     end
 end
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --- Executes on button press in pushbutton56.
 function pushbutton56_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton56 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 AB = handles.AB;
 
 chroma = get(handles.checkbox21, 'Value'); %correction of chroma aberrations
@@ -616,12 +659,12 @@ if save == 1
     el532 = get(handles.radiobutton10, 'Value');
     pathname = handles.folder;
     if el488 == 1
-    filename488 = 'el_488_corrected.ascii';
+    filename488 = 'el_grII_corrected.ascii';
     elseif el532 == 1
-    filename488 = 'el_532_corrected.ascii';
+    filename488 = 'el_grI_corrected.ascii';
     end
     FPName488 = [pathname filename488];
-    filename642 = 'el_642_corrected.ascii';
+    filename642 = 'el_red_corrected.ascii';
     FPName642 = [pathname filename642];
     dlmwrite(FPName488, ABcorr{2});
     dlmwrite(FPName642, ABcorr{1});
@@ -629,6 +672,11 @@ end
 
 handles.ABcorr = ABcorr;
 guidata(hObject,handles);
+
+catch errorObj
+% If there is a problem, we display the error message
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --- Executes on button press in pushbutton55.
@@ -654,6 +702,8 @@ function pushbutton53_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton53 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % % handles    structure with handles and user data (see GUIDATA)
+try
+
 oil = get(handles.radiobutton9, 'Value');
 
 if oil == 1
@@ -682,6 +732,9 @@ end
 handles.ABcorr = AB;
 guidata(hObject,handles);
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --- Executes on button press in pushbutton57.
@@ -689,6 +742,8 @@ function pushbutton57_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton57 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 ABcorr = handles.ABcorr;
 pixsize = str2double(get(handles.edit42, 'string'));
 
@@ -719,12 +774,12 @@ if save == 1
     el532 = get(handles.radiobutton10, 'Value');
     pathname = handles.folder;
     if el488 == 1
-    filename488 = 'el_488_corrected.ascii';
+    filename488 = 'el_grII_corrected.ascii';
     elseif el532 == 1
-    filename488 = 'el_532_corrected.ascii';
+    filename488 = 'el_grI_corrected.ascii';
     end
     FPName488 = [pathname filename488];
-    filename642 = 'el_642_corrected.ascii';
+    filename642 = 'el_red_corrected.ascii';
     FPName642 = [pathname filename642];
     dlmwrite(FPName488, ABcorr{2});
     dlmwrite(FPName642, ABcorr{1});
@@ -734,12 +789,18 @@ handles.BW = BW;
 guidata(hObject,handles);
 end
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --- Executes on button press in pushbutton58.
 function pushbutton58_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton58 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 ABcorr = handles.ABcorr;
 pixsize = str2double(get(handles.edit42, 'string'));
 
@@ -770,12 +831,12 @@ if save == 1
     el532 = get(handles.radiobutton10, 'Value');
     pathname = handles.folder;
     if el488 == 1
-    filename488 = 'el_488_corrected.ascii';
+    filename488 = 'el_grII_corrected.ascii';
     elseif el532 == 1
-    filename488 = 'el_532_corrected.ascii';
+    filename488 = 'el_grI_corrected.ascii';
     end
     FPName488 = [pathname filename488];
-    filename642 = 'el_642_corrected.ascii';
+    filename642 = 'el_red_corrected.ascii';
     FPName642 = [pathname filename642];
     dlmwrite(FPName488, ABcorr{2});
     dlmwrite(FPName642, ABcorr{1});
@@ -784,13 +845,18 @@ handles.ABcorr = ABcorr;
 guidata(hObject,handles);
 end
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --- Executes on button press in pushbutton59.
 function pushbutton59_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton59 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+try
+    
 method = get(handles.popupmenu22, 'Value');
 pix = str2double(get(handles.edit63, 'String'));
 steps = str2double(get(handles.edit27, 'String'));
@@ -815,11 +881,11 @@ if save == 1
     pathname = handles.folder;
     for i = 1:2
         if i == 1
-           FPName = [pathname 'FRC647.png'];
+           FPName = [pathname 'FRCred.png'];
         elseif el488 == 1
-           FPName = [pathname 'FRC488.png'];
+           FPName = [pathname 'FRCgrII.png'];
         elseif el532 == 1
-           FPName = [pathname 'FRC532.png'];
+           FPName = [pathname 'FRCgrI.png'];
         end
     h2 = figure('visible', 'off');
     if ~isempty (FRC{i})
@@ -845,11 +911,17 @@ end
 handles.FRC = FRC;
 guidata(hObject,handles);
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 % --- Executes on button press in pushbutton60.
 function pushbutton60_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton60 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 FRC = handles.FRC;
 pix = str2double(get(handles.edit63, 'String'));
 if ~isempty (FRC{2})
@@ -862,12 +934,18 @@ if ~isempty (FRC{2})
     axis([0 (0.5/pix) 0 1]);
 end
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --- Executes on button press in pushbutton62.
 function pushbutton62_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton62 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 FRC = handles.FRC;
 pix = str2double(get(handles.edit63, 'String'));
 if ~isempty (FRC{1})
@@ -880,13 +958,22 @@ if ~isempty (FRC{1})
     axis([0 (0.5/pix) 0 1]);
 end
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --- Executes on button press in pushbutton63.
 function pushbutton63_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton63 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try 
 timeincolor(handles.ABcorr, handles.AB, handles.folder);
+
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -895,6 +982,8 @@ function pushbutton77_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton77 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 AB = handles.ABcorr;
 [~, Image3D] = viewZ(AB);
 
@@ -914,6 +1003,10 @@ end
 handles.Image3D = Image3D;
 guidata(hObject,handles);
 
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 
 % --- Executes on button press in pushbutton78.
@@ -921,6 +1014,8 @@ function pushbutton78_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton78 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+
 ABcorr = handles.ABcorr;
 [~, ABcorr] = filtration(ABcorr);
 
@@ -930,12 +1025,12 @@ if save == 1
     el532 = get(handles.radiobutton10, 'Value');
     pathname = handles.folder;
     if el488 == 1
-    filename488 = 'el_488_corrected.ascii';
+    filename488 = 'el_grII_corrected.ascii';
     elseif el532 == 1
-    filename488 = 'el_532_corrected.ascii';
+    filename488 = 'el_grI_corrected.ascii';
     end
     FPName488 = [pathname filename488];
-    filename642 = 'el_642_corrected.ascii';
+    filename642 = 'el_red_corrected.ascii';
     FPName642 = [pathname filename642];
     dlmwrite(FPName488, ABcorr{2});
     dlmwrite(FPName642, ABcorr{1});
@@ -943,6 +1038,10 @@ end
 
 handles.ABcorr = ABcorr;
 guidata(hObject,handles);
+
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --- Executes on button press in pushbutton80.
@@ -961,7 +1060,12 @@ function pushbutton83_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton83 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try 
 Chroma_calibration;
+
+catch errorObj
+errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --- Executes on button press in checkbox56.
@@ -1147,3 +1251,10 @@ else
         ClusterViSu;
     end
 end
+
+
+% --------------------------------------------------------------------
+function Untitled_1_Callback(hObject, eventdata, handles)
+% hObject    handle to Untitled_1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

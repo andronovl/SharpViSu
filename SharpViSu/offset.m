@@ -47,4 +47,5 @@ offset1(end,:) = 1.5 .* offset1(end,:);
 else
     offset = NaN;
     offset1 = NaN;
+    h = errordlg('Please use at least 2 subsets for drift estimation', 'Incorrect number of subsets');
 end

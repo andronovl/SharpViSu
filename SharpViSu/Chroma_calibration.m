@@ -217,7 +217,9 @@ FPName=[currentDir FileName{i}];
 save(FPName, 'a');
     end
 end
-
+if isempty(tform{1}) && isempty(tform{2})
+    h = errordlg('Please load calibration data first','No calibration data');
+end
 
 
 
@@ -228,7 +230,8 @@ function edit14_Callback(hObject, eventdata, handles)
 filter_photons(hObject,handles);
 
 function filter_photons(hObject, handles)
-
+try
+    
 ABC = handles.ABCcorr;
 
 beg(1) = 1000 * str2double(get(handles.edit14, 'String')); % lowest photons A
@@ -250,6 +253,10 @@ handles.ABCcorr1 = ABC;
 guidata(hObject,handles);
 updatehist(hObject, handles);
 Fitting(hObject, handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -356,6 +363,7 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 rad(1) = str2double(get(handles.edit7, 'string')); % radius A
 gap(1) = str2double(get(handles.edit20, 'string')); % nb of empty frames
 rad(2) = str2double(get(handles.edit8, 'string')); % radius B
@@ -372,12 +380,19 @@ else
   ABCcorr{i} = ABC{i};
 end
 end
+if isempty(ABC{1}) && isempty(ABC{2}) && isempty(ABC{3})
+    h = errordlg('Please load calibration data first','No calibration data');
+end
 
 handles.ABCcorr = ABCcorr;
 handles.ABCcorr1 = ABCcorr;
 guidata(hObject,handles);
 
 filter_photons(hObject,handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 function updatehist(hObject, handles)
@@ -447,6 +462,7 @@ UpdateImage(hObject, handles);
 
 
 function UpdateImage(hObject, handles)
+try
 ABC = handles.ABC;
 ABCcorr = handles.ABCcorr1;
 Anew = handles.Anew;
@@ -630,6 +646,10 @@ axis(handles.axes2, [0 fov 0 fov]);
 % close(h2);
 guidata(hObject,handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 function edit24_Callback(hObject, eventdata, handles)
 % hObject    handle to edit24 (see GCBO)
@@ -640,7 +660,8 @@ Fitting(hObject, handles);
 
 
 function Fitting(hObject, handles)
-
+try
+    
 ABC = handles.ABCcorr;
 
 R = str2double(get(handles.edit24, 'String')); % search radius
@@ -674,6 +695,10 @@ handles.Anew = Anew;
 handles.Bnew = Bnew;
 guidata(hObject,handles);
 UpdateImage(hObject, handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 

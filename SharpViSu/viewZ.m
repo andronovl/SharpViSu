@@ -135,6 +135,7 @@ ShowSlice(hObject, handles);
 
 function updateimage(hObject, handles)
 % updates the image
+try
 I0 = handles.I0;
 mult(1) = str2double(get(handles.edit6, 'String'));
 mult(2) = str2double(get(handles.edit7, 'String'));
@@ -196,6 +197,11 @@ handles.RGB = RGB;
 %handles.multiplier = mult;
 guidata(hObject, handles);
 ShowSlice(hObject, handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 function ShowSlice(~, handles)
 %show the slice
@@ -273,7 +279,7 @@ GetSlices(hObject, handles);
 
 function GetSlices(hObject, handles)
 % calculates Z-stack from eventlist
-
+try
 AB = handles.AB;
 pixsizexy = str2double(get(handles.edit9, 'String'));
 pixsizez = str2double(get(handles.edit8, 'String'));
@@ -306,6 +312,10 @@ set(handles.slider1, 'Sliderstep', slider_step, 'Max', slider_max, 'Min', slider
 
 guidata(hObject, handles);
 updateimage(hObject, handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 

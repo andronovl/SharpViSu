@@ -89,6 +89,7 @@ varargout{3} = handles.RGB;
 
 
 function GetHSV(hObject, handles)
+try
 if get(handles.radiobutton2, 'Value') && get(handles.radiobutton4, 'Value') % corr red
     index = [1, 1];
 elseif get(handles.radiobutton2, 'Value') && ~get(handles.radiobutton4, 'Value') % corr green
@@ -114,8 +115,12 @@ end
 end
 GetRGB(hObject, handles);
 
-function GetRGB(hObject, handles)
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
+function GetRGB(hObject, handles)
+try
 if get(handles.radiobutton2, 'Value') && get(handles.radiobutton4, 'Value') % corr red
     index = [1, 1];
 elseif get(handles.radiobutton2, 'Value') && ~get(handles.radiobutton4, 'Value') % corr green
@@ -143,6 +148,10 @@ if ~isempty(handles.RGB{index(1),index(2)})
     set(handles.axes1, 'XTickLabel', [], 'XTick', [], 'FontSize', 10);
 end
 guidata(hObject, handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 

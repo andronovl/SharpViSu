@@ -86,6 +86,7 @@ GetFile(hObject, handles, 1);
 
 
 function GetFile( hObject, handles, channel)
+try
 format = get(handles.popupmenu1, 'Value');
     extension = '*.*';
 if isfield(handles, 'folder')
@@ -131,6 +132,10 @@ end
 cla(handles.axes1); %clear the fit plot
 guidata(hObject,handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 
 
@@ -157,6 +162,7 @@ function pushbutton6_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 ABC = handles.ABC;
 step = str2double(get(handles.edit6, 'String'));
 degree = str2double(get(handles.edit10, 'String'));
@@ -239,6 +245,13 @@ handles.An = An;
 handles.Am = Am;
 guidata(hObject,handles);
 UpdatePlot(hObject, handles);
+
+if isempty(ABC{1}) && isempty(ABC{2}) && isempty(ABC{3})
+    h = errordlg('Please load calibration data first','No calibration data');
+end
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 function UpdatePlot(~, handles)
 cla(handles.axes1); %clear the fit plot
@@ -358,6 +371,10 @@ for i = 1 : 3
 FPName=[currentDir FileName{i}];
 dlmwrite(FPName, p{i});
     end
+end
+
+if isempty(p{1}) && isempty(p{2}) && isempty(p{3})
+    h = errordlg('Please fit the data first','No fit');
 end
 
 

@@ -148,7 +148,9 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 AB = handles.AB;
+if ~isempty(AB{1}) || ~isempty(AB{2})
 method = get(handles.popupmenu3, 'Value');
 if method == 1 % freehand
     h = imfreehand(handles.axes1);
@@ -176,6 +178,12 @@ updateSRIm(hObject,handles);
 % if exist('temp' , 'var')
 % uiwait(handles.figure1);
 % end % update the super-resolution image
+else
+    errordlg('Please load data first!','No data');
+end
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -201,6 +209,7 @@ function pushbutton7_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 dr = str2double(get(handles.edit3, 'String'));
 rmax = str2double(get(handles.edit4, 'String'));
 signif = str2double(get(handles.edit5, 'String'));
@@ -234,6 +243,10 @@ end
 guidata(hObject,handles);
 updateRipleyGraph(handles);
 setVoronoiThreshold(hObject, handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --- Executes on selection change in popupmenu5.
@@ -332,7 +345,9 @@ guidata(hObject,handles);
 updateLimRGB(hObject, handles);
 thresholding (handles);
 
+
 function updateLimRGB(hObject, handles)
+try
 channel = get(handles.popupmenu1, 'Value');
 mode = get(handles.popupmenu10, 'Value');
 RGB = handles.LimRGB{channel, mode};
@@ -371,8 +386,13 @@ else
     cla(handles.axes3);
 end
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 function updateSRIm(hObject, handles)
 % updates figure in the panel "Super-resolution image"
+try
 channel = get(handles.popupmenu1, 'Value');
 A = handles.ABmasked{channel};
 BW = handles.BW{channel};
@@ -403,10 +423,15 @@ handles.prevRGB{channel} = RGB;
 guidata(hObject, handles);
 end
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 
 function updateRipleyGraph(handles)
 % updates the content of the "Ripley's K analysis" box
+try
 if isfield(handles, 'Ripley')
     Ripley = handles.Ripley;
     VoronoiStats = handles.VoronoiStats;
@@ -470,8 +495,13 @@ if isfield(handles, 'Ripley')
     end
 end
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 function updateStats(handles)
 % updates the histogram for ClusterViSu' statistics
+try
 mode = get(handles.popupmenu10, 'Value');
 channel = get(handles.popupmenu1, 'Value');
 if isfield(handles, 'stats')
@@ -551,6 +581,10 @@ elseif show == 5 % density
 end
 end
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --- Executes when user attempts to close figure1.
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
@@ -585,7 +619,8 @@ I = hist3 (Anew,'Edges', edges);
 
 
 function thresholding (handles)
-
+try
+    
 thresh = str2double(get(handles.edit9, 'String')); %threshold
 minima = str2double(get(handles.edit13, 'String')); %minimum for h-minima transform
 water = get(handles.checkbox1, 'Value'); % watershed
@@ -704,6 +739,10 @@ guidata(handles.figure1, handles);
 updateStats(handles);
 end
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 
 function edit25_Callback(hObject, eventdata, handles)
@@ -815,6 +854,7 @@ function Save_Callback(hObject, eventdata, handles)
 % hObject    handle to Save (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 pathname = handles.folder;
 dir = uigetdir(pathname, 'Folder to save the data');
 dir = [dir '\'];
@@ -1211,6 +1251,10 @@ elseif channel == 2 %green eventlist
 FPName=[dir 'clusterStat_green.ascii'];
 end    
 dlmwrite(FPName, clusters);
+end
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
 end
     
     

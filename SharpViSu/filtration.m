@@ -94,6 +94,7 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 if ~get(handles.checkbox3, 'Value')
     AB = handles.AB; % correct exclusively initial eventlists
 else
@@ -119,6 +120,10 @@ updatefigure(handles, ABcorr);
 
 handles.ABcorr = ABcorr;
 guidata(hObject,handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -440,6 +445,7 @@ end
 
 function updatefigure(handles, ABcorr)
 % ABcorr = cell 
+try
 if ~isempty(ABcorr{1})
     plotevperfr(ABcorr{1}, handles.axes5);
     bins = str2double(get(handles.edit13, 'String')); % nb of bins for red histogram
@@ -452,11 +458,25 @@ if ~isempty(ABcorr{2})
     plotphperev(ABcorr{2}, bins, handles.axes2, handles.text46, handles.text47, handles.text48)
     set(handles.text52, 'String', size(ABcorr{2}, 1));
 end
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
         
 function A = keepframes (A, beg, fin)
 % keeps only events from frames from beg to fin
+try
 A(((A(:,2) < beg) | (A(:,2) > fin)),:) = [];
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 function A = keepphotons (A, beg, fin)
 % keeps only events wigh photon count from beg to fin
+try
 A(((A(:,7) < beg) | (A(:,7) > fin)),:) = [];
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end

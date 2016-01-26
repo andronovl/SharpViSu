@@ -213,7 +213,7 @@ UpdateImage(hObject, handles);
 
 
 function UpdateImage(hObject, handles)
-
+try
 monochr = get(handles.checkbox11, 'Value');
 if monochr
     %set(handles.popupmenu2, 'Value', 3); % set string to gray
@@ -372,6 +372,10 @@ end
 end
 guidata(hObject, handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 
 
@@ -395,6 +399,7 @@ Reconstruct(hObject, handles);
 
 
 function Reconstruct(hObject, handles)
+try
 pixsize = str2double(get(handles.edit5, 'String'));
 mode = get(handles.popupmenu5, 'Value');
 capacity = str2double(get(handles.edit7, 'String'));
@@ -546,12 +551,17 @@ handles.Voronoi0 = Voronoi0;
 guidata(hObject, handles);
 UpdateImage(hObject, handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --- Executes on button press in pushbutton7.
 function pushbutton7_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 drawcorr = get(handles.radiobutton2, 'Value');
 mode = get(handles.popupmenu5, 'Value');
 if drawcorr
@@ -566,6 +576,10 @@ if FileName ~= 0
 FPName=[PathName FileName];
 imwrite(RGB, FPName, 'Compression', 'lzw');
 end
+end
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
 end
 
 
