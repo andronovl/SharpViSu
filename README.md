@@ -13,6 +13,8 @@ Add folder “SharpViSu” to the search directory of Matlab. The code was teste
 
 Further instructions are present in the file "SharpViSu user manual.pdf"
 
-<b> Citation </b>
+<b> Citations </b>
 
 Andronov, L., Lutz, Y., Vonesch, J.-L. & Klaholz, B. P. SharpViSu: integrated analysis and segmentation of super-resolution microscopy data. <i>Bioinformatics</i> (2016) <a href="http://bioinformatics.oxfordjournals.org/content/early/2016/03/17/bioinformatics.btw123">doi:10.1093/bioinformatics/btw123</a>
+
+Andronov, L., Orlov, I., Lutz, Y., Vonesch, J.-L. & Klaholz, B. P. ClusterViSu, a method for clustering of protein complexes by Voronoi tessellation in super-resolution microscopy. <i>Scientific Reports</i> <b>6</b>, 24084 (2016) <a href="http://www.nature.com/articles/srep24084">http://www.nature.com/articles/srep24084</a>
