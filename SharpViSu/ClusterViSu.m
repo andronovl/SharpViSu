@@ -890,7 +890,7 @@ elseif get(handles.popupmenu10, 'Value') == 5 % Voronoi density map
 end
 if ~isempty(handles.LimRGB{channel, base})
 Lim = handles.LimRGB{channel, base};
-bright = get(handles.edit10, 'String');
+bright = get(handles.edit17, 'String');
 pixsize = get(handles.edit7, 'String');
 rad = get(handles.edit8, 'String');
 noise = get(handles.edit12, 'String');
