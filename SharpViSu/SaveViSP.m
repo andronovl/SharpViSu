@@ -20,15 +20,13 @@ elseif format == 2 %.2dlp
     dlmwrite(FPName, B, '\t');
 elseif format == 3 %.3d
     B = zeros(size(A,1), 4);
-    B(:,1:2) = A(:,4:5);
-    B(:,3) = A(:,6);
+    B(:,1:3) = A(:,4:6);
     B(:,4) = A(:,7);
     B(:,5) = A(:,2);
     dlmwrite(FPName, B, '\t');
 elseif format == 4 %.3dlp
     B = zeros(size(A,1), 4);
-    B(:,1:2) = A(:,4:5);
-    B(:,3) = A(:,6); %Z
+    B(:,1:3) = A(:,4:6);
     if A(1,8) ~= 0
         B(:,4) = 2.355 * 2 * A(:,8) ./ (eps + sqrt(A(:,7))); %FWHM precision X
         B(:,5) = 2.355 * 2 * A(:,9) ./ (eps + sqrt(A(:,7))); %FWHM precision Y

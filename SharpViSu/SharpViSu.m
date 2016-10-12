@@ -115,7 +115,7 @@ if isstruct(A)
 A = A.data;
 end
 
-if format ~= 5
+if format ~= 7
 A = adjustformat(A, format);    % adjust the format to the standard
 end    
 
@@ -224,7 +224,7 @@ if isstruct(B)
 B = B.data;
 end
 
-if format ~= 5
+if format ~= 7
 B = adjustformat(B, format);    % adjust the format to the standard
 end    
 

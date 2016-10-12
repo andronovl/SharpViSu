@@ -43,11 +43,11 @@ for k = 1:iter
         Ar(:,4:5) = rand(size(Ar, 1), 2) * fov;
         Anewr = parroifilter(Ar, BW, 1);
         [ ~, Kr(:,k), Lr(:,k), Lmrr(:,k) ] = Ripleypoly( Anewr, BW1, dr, rmax, BW );
+        waitbar(k/iter, h, 'Ripley Monte Carlo simulation');
+end
         K(:, 2:3) = [mean(Kr, 2) - z * std(Kr, 0, 2), mean(Kr, 2) + z * std(Kr, 0, 2)];
         L(:, 2:3) = [mean(Lr, 2) - z * std(Lr, 0, 2), mean(Lr, 2) + z * std(Lr, 0, 2)];
         Lmr(:, 2:3) = [mean(Lmrr, 2) - z * std(Lmrr, 0, 2), mean(Lmrr, 2) + z * std(Lmrr, 0, 2)];
-        waitbar(k/iter, h, 'Ripley Monte Carlo simulation');
-end
         close(h);
 end
 end

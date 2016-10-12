@@ -22,7 +22,7 @@ function varargout = ClusterViSu(varargin)
 
 % Edit the above text to modify the response to help ClusterViSu
 
-% Last Modified by GUIDE v2.5 30-Sep-2015 10:22:09
+% Last Modified by GUIDE v2.5 12-Oct-2016 11:16:31
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -71,6 +71,7 @@ else
     handles.AB = cell(2,1);
     handles.ABmasked = cell(2,1);
     guidata(hObject, handles);
+    handles.folder = pwd;
 end
 R = cell(1,2);
 K = cell(1,2);
@@ -210,6 +211,11 @@ function pushbutton7_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 try
+    
+% if isempty(gcp('nocreate'))
+%     parpool local;
+% end
+
 dr = str2double(get(handles.edit3, 'String'));
 rmax = str2double(get(handles.edit4, 'String'));
 signif = str2double(get(handles.edit5, 'String'));
@@ -333,9 +339,9 @@ I(I < 0) = 0;
 Lmax = max(max(I));
 I = uint8(mult * I * 256 / Lmax);
 RGB = ind2rgb(I, jet(256));
-I0(I0 > 0) = 1;
-I0 = ~I0;
-RGB = RGB .* cat(3, I0, I0, I0);
+%I0(I0 > 0) = 1;
+%I0 = ~I0;
+%RGB = RGB .* cat(3, I0, I0, I0);
 
 handles.LimRGB{channel, mode} = RGB;
 else
@@ -350,11 +356,18 @@ function updateLimRGB(hObject, handles)
 try
 channel = get(handles.popupmenu1, 'Value');
 mode = get(handles.popupmenu10, 'Value');
+locs = get(handles.checkbox4, 'Value');
 RGB = handles.LimRGB{channel, mode};
 if ~isempty(RGB)
     if mode ~= 4
         I = handles.Lim{channel, mode};
         Lmax = max(max(I));
+        if locs
+            I0 = handles.I0{channel};
+            I0(I0 > 0) = 1;
+            I0 = ~I0;
+            RGB = RGB .* cat(3, I0, I0, I0);
+        end
         iptsetpref('ImshowAxesVisible','off');
         imshow(RGB, 'Parent', handles.axes3);
         axis(handles.axes3, 'equal');
@@ -363,7 +376,7 @@ if ~isempty(RGB)
         cla(handles.axes3);
         C = RGB{3};
         V = RGB{2};
-        A = RGB{4};
+        %A = RGB{4};
         hold on
         for i = 1:length(C)
             patch(V(C{i},1), V(C{i},2), 'w', 'Parent', handles.axes3);
@@ -629,6 +642,7 @@ exclmax = str2double(get(handles.edit16, 'String')); %exclude clusters bigger th
 limits = [excl, exclmax];
 channel = get(handles.popupmenu1, 'Value');
 mode = get(handles.popupmenu10, 'Value');
+locs = get(handles.checkbox5, 'Value');
 if mode == 5
     thresh = 1/thresh;
 end
@@ -696,11 +710,15 @@ else
 end
 
 if ~isempty (Binary)
-I0 = handles.I0{channel};
-I = I0;
-I0(I0 > 0) = 1;
-I0 = im2bw(I0, 0.5);
-RGB = hsv2rgb(cat(3, ones(size(I0)), I0, I0 | Binary));
+    I0 = handles.I0{channel};
+    I = I0;
+    if locs
+        I0(I0 > 0) = 1;
+        I0 = im2bw(I0, 0.5);
+        RGB = hsv2rgb(cat(3, ones(size(I0)), I0, I0 | Binary));
+    else
+        RGB = double(cat(3, Binary, Binary, Binary));
+    end
 iptsetpref('ImshowAxesVisible','off');
 imshow(RGB, 'Parent', handles.axes4);
 
@@ -861,6 +879,8 @@ dir = [dir '\'];
 channel = get(handles.popupmenu1, 'Value');
 
 % save the preview
+if isfield(handles, 'prevRGB')
+if ~isempty(handles.prevRGB{channel})
 prevRGB = handles.prevRGB{channel};
 pixsize = get(handles.edit1, 'String');
 bright = get(handles.edit2, 'String');
@@ -870,6 +890,8 @@ elseif channel == 2 %green eventlist
 FPName=[dir 'prev_green_' pixsize '_' bright '.tif'];
 end
 imwrite(prevRGB, FPName, 'Compression', 'lzw');
+end
+end
 
 % save the cluster map image
 if get(handles.popupmenu10, 'Value') == 1 % L(R)
@@ -1106,12 +1128,12 @@ elseif channel == 2 %green eventlist
 end
 h3 = figure('visible', 'off');
 if size(Histograms, 2) > 2 % monte carlo
-    plot(handles.axes2, Histograms(:,1), Histograms(:,2), Histograms(:,1), Histograms(:,3), Histograms(:,1), Histograms(:,4), Histograms(:,1), Histograms(:,5));
+    plot(Histograms(:,1), Histograms(:,2), Histograms(:,1), Histograms(:,3), Histograms(:,1), Histograms(:,4), Histograms(:,1), Histograms(:,5));
 elseif size(Histograms, 2) == 2 % no monte-carlo
-    plot(handles.axes2, Histograms(:,1), Histograms(:,2));
+    plot(Histograms(:,1), Histograms(:,2));
 end
-xlim(handles.axes2, [0, max(Histograms(:,1))]);
-ylim(handles.axes2, [0, max(max(Histograms(:,2:end)))]);
+xlim([0, max(Histograms(:,1))]);
+ylim([0, max(max(Histograms(:,2:end)))]);
 xlabel('Voronoi polygon area (nm^2)')
 ylabel('Occurrence')
 hgexport(h3, FPName, myStyle, 'Format', 'png');
@@ -1252,6 +1274,14 @@ FPName=[dir 'clusterStat_green.ascii'];
 end    
 dlmwrite(FPName, clusters);
 end
+
+%save screenshot
+if channel == 1 %red eventlist
+FPName=[dir 'screenshot_red.png'];
+elseif channel == 2 %green eventlist
+FPName=[dir 'screenshot_green.png'];
+end    
+hgexport(gcf, FPName, hgexport('factorystyle'), 'Format', 'png');
 
 catch errorObj
     errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
@@ -1647,6 +1677,99 @@ A = importdata([pathname filename]);
 if isstruct(A)
 A = A.data;
 end
+
+handles.folder = pathname;
+handles.AB{channel} = A;
+handles.ABmasked{channel} = A;
+end
+handles.BW = cell(2,1);
+
+%clear old data
+cleardata(handles);
+guidata(hObject,handles);
+updateSRIm(hObject,handles);
+
+
+% --- Executes on button press in checkbox4.
+function checkbox4_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox4
+
+updateLimRGB(hObject, handles);
+
+
+% --- Executes on button press in checkbox5.
+function checkbox5_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox5
+thresholding (handles);
+
+
+% --------------------------------------------------------------------
+function ThunderSTORM_Callback(hObject, eventdata, handles)
+% hObject    handle to ThunderSTORM (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+channel = get(handles.popupmenu1, 'Value');
+text{1} = '642-nm eventlist';
+text{2} = '488/532-nm eventlist';
+if isfield(handles, 'folder')
+    pathname = handles.folder;
+    [filename, pathname] = uigetfile({'*.csv'; '*.xsl'; '*.txt'}, text{channel}, pathname);
+else
+[filename, pathname] = uigetfile({'*.csv'; '*.xsl'; '*.txt'}, text{channel});
+end
+if pathname ~= 0
+A = importdata([pathname filename]);
+
+if isstruct(A)
+A = A.data;
+end
+
+% adjust the format to the standard
+A = adjustformat(A, 5);
+
+handles.folder = pathname;
+handles.AB{channel} = A;
+handles.ABmasked{channel} = A;
+end
+handles.BW = cell(2,1);
+
+%clear old data
+cleardata(handles);
+guidata(hObject,handles);
+updateSRIm(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function ViSP_Callback(hObject, eventdata, handles)
+% hObject    handle to ViSP (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+channel = get(handles.popupmenu1, 'Value');
+text{1} = '642-nm eventlist';
+text{2} = '488/532-nm eventlist';
+if isfield(handles, 'folder')
+    pathname = handles.folder;
+    [filename, pathname] = uigetfile({'*.2d'; '*.2dlp'; '*.3d'; '*.3dlp'}, text{channel}, pathname);
+else
+[filename, pathname] = uigetfile({'*.2d'; '*.2dlp'; '*.3d'; '*.3dlp'}, text{channel});
+end
+if pathname ~= 0
+A = importdata([pathname filename]);
+
+if isstruct(A)
+A = A.data;
+end
+
+% adjust the format to the standard
+A = adjustformat(A, 6);
 
 handles.folder = pathname;
 handles.AB{channel} = A;
