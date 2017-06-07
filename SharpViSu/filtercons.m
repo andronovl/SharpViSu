@@ -1,9 +1,9 @@
 function [ Anew1 ] = filtercons(A, rin, gap, anis)
 %UNTITLED Summary of this function goes here
 % in nm
-% sums consecutive events within an ellipse, a=rin*sigmax/100, b=rin*sigmay/100 (nm)
+% adds consecutive events within an ellipse, a=rin*sigmax/100, b=rin*sigmay/100 (nm)
 % around the first one: 
-% new coordinates(x,y,z), sigmas, = mean of the old ones, photon count = sum.
+% new coordinates(x,y,z), sigmas, = mean of old ones, photon count = sum.
 % 
 if isstruct(A)
 Adata = A.data;

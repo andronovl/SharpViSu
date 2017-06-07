@@ -6,9 +6,6 @@ function [ I, Avor ] = drawVor( A1, p, fov, ko, ke )
 % The values of the density are then interpolated to an regular grid with a
 % step size of p (nm) using the method 'natural'.
 % Optional parameters: fov, ko, ke
-if ~exist('fov', 'var')
-    fov = 18000;
-end
 if ~exist('ko', 'var')
     ko = 1;
 end
