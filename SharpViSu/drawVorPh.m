@@ -1,4 +1,4 @@
-function [ I, Avor ] = drawVor( A1, p, fov, ko, ke )
+function [ I, Avor ] = drawVorPh( A1, p, fov, ko, ke )
 % Builds the super-res image with help of Voronoi triangulation. The
 % density at each data point is estimated as an inverse of the area of the
 % corresponding Voronoi cell. This value is added to the 10-th column of

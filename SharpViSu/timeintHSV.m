@@ -10,20 +10,20 @@ end
 fov = FOV(Adata);
 s = fov / p; % image size in pixels
 I = zeros(s,s,2); % blank image
-l = length(Adata); % number of rows
+l = size(Adata,1); % number of rows
 for k = 1:l
-for m = 1:s % x on final image
-if (Adata(k,5) > p * (m-1)) && (Adata(k,5) <= p * m)
-for n = 1:s % y on final image
-if (Adata(k,4) > p * (n-1)) && (Adata(k,4) <= p * n)
-I(m,n,1) = I(m,n,1) + 1;
-I(m,n,2) = I(m,n,2) + Adata(k,2);
-break
-end
-end
-break
-end
-end
+    for m = 1:s % x on final image
+        if (Adata(k,5) > p * (m-1)) && (Adata(k,5) <= p * m)
+            for n = 1:s % y on final image
+                if (Adata(k,4) > p * (n-1)) && (Adata(k,4) <= p * n)
+                    I(m,n,1) = I(m,n,1) + 1;
+                    I(m,n,2) = I(m,n,2) + Adata(k,2);
+                    break
+                end
+            end
+            break
+        end
+    end
 end
 
 

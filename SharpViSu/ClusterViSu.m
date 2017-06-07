@@ -53,6 +53,7 @@ function ClusterViSu_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to ClusterViSu (see VARARGIN)
 
 % Choose default command line output for ClusterViSu
+try
 handles.output = hObject;
 if nargin == 5
     AB = varargin{1};
@@ -90,6 +91,10 @@ handles.L = cell(2,2);
 handles.Lim = cell(2,3);
 handles.LimRGB = cell(2,3);
 guidata(hObject, handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 % Update handles structure
 
 % 
@@ -103,14 +108,17 @@ function varargout = ClusterViSu_OutputFcn(hObject, eventdata, handles, varargin
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+try
 % Get default command line output from handles structure
 if nargin == 4
-if isfield(handles, 'output')
-varargout{1} = handles.output;
+    if isfield(handles, 'output')
+        varargout{1} = handles.output;
+    end
+    %varargout{2} = handles.Ripley;
+    % delete(hObject);
 end
-%varargout{2} = handles.Ripley;
-% delete(hObject);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
 end
 
 
@@ -119,10 +127,14 @@ function popupmenu1_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 updateSRIm(hObject,handles);
 updateRipleyGraph(handles);
 updateLimRGB(hObject, handles);
 thresholding(handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -131,7 +143,11 @@ function edit1_Callback(hObject, eventdata, handles)
 % hObject    handle to edit1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 updateSRIm(hObject,handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -140,7 +156,11 @@ function edit2_Callback(hObject, eventdata, handles)
 % hObject    handle to edit2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 updateSRIm(hObject,handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -194,6 +214,7 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 AB = handles.AB{channel};
 BW = [];
@@ -201,6 +222,9 @@ handles.BW{channel} = BW;
 handles.ABmasked{channel} = AB;
 guidata(hObject, handles);
 updateSRIm(hObject,handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -260,7 +284,11 @@ function popupmenu5_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 updateRipleyGraph(handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -268,7 +296,11 @@ function edit9_Callback(hObject, eventdata, handles)
 % hObject    handle to edit9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 thresholding (handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -277,7 +309,11 @@ function popupmenu7_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 updateStats(handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 
@@ -286,6 +322,8 @@ function pushbutton11_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+    
 channel = get(handles.popupmenu1, 'Value');
 A = handles.AB{channel};
 BW = handles.BW{channel};
@@ -350,6 +388,10 @@ end
 guidata(hObject,handles);
 updateLimRGB(hObject, handles);
 thresholding (handles);
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 function updateLimRGB(hObject, handles)
@@ -615,6 +657,7 @@ end
 
 
 function [I] = drmasked (A, BW, p, fov)
+try
 % draws the histogram image only in the rectangle circumscribing BW
 Anew(:,1) = A(:,5);
 Anew(:,2) = A(:,4);
@@ -629,6 +672,9 @@ edgesx = minmax(1,1)-1:p:minmax(2,1);
 edgesy = minmax(1,2)-1:p:minmax(2,2);
 edges = {edgesx, edgesy};
 I = hist3 (Anew,'Edges', edges);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 function thresholding (handles)
@@ -835,6 +881,7 @@ function xytable_Callback(hObject, eventdata, handles)
 % hObject    handle to xytable (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
@@ -865,6 +912,11 @@ handles.BW = cell(2,1);
 cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
+
+
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --------------------------------------------------------------------
@@ -1294,6 +1346,7 @@ function LAS_AF_Callback(hObject, eventdata, handles)
 % hObject    handle to LAS_AF (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
@@ -1324,12 +1377,18 @@ cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --------------------------------------------------------------------
 function QuickPALM_Callback(hObject, eventdata, handles)
 % hObject    handle to QuickPALM (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
+    
 channel = get(handles.popupmenu1, 'Value');
 text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
@@ -1360,12 +1419,17 @@ cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --------------------------------------------------------------------
 function RapidSTORM_Callback(hObject, eventdata, handles)
 % hObject    handle to RapidSTORM (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
@@ -1396,12 +1460,17 @@ cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 
 % --------------------------------------------------------------------
 function Save_mask_Callback(hObject, eventdata, handles)
 % hObject    handle to Save_mask (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 BW = handles.BW{channel};
 if ~isempty(BW)
@@ -1411,6 +1480,9 @@ if FileName ~= 0
 FPName = [PathName FileName];
 imwrite(BW, FPName);
 end
+end
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
 end
 
 function cleardata(handles)
@@ -1627,6 +1699,7 @@ function microManager_Callback(hObject, eventdata, handles)
 % hObject    handle to microManager (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
@@ -1657,11 +1730,16 @@ cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
 
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
+
 % --------------------------------------------------------------------
 function SharpViSu_Callback(hObject, eventdata, handles)
 % hObject    handle to SharpViSu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 text{1} = 'red eventlist';
 text{2} = 'green eventlist';
@@ -1688,6 +1766,9 @@ handles.BW = cell(2,1);
 cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --- Executes on button press in checkbox4.
@@ -1716,6 +1797,7 @@ function ThunderSTORM_Callback(hObject, eventdata, handles)
 % hObject    handle to ThunderSTORM (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
@@ -1745,6 +1827,9 @@ handles.BW = cell(2,1);
 cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end
 
 
 % --------------------------------------------------------------------
@@ -1752,6 +1837,7 @@ function ViSP_Callback(hObject, eventdata, handles)
 % hObject    handle to ViSP (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 channel = get(handles.popupmenu1, 'Value');
 text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
@@ -1781,3 +1867,6 @@ handles.BW = cell(2,1);
 cleardata(handles);
 guidata(hObject,handles);
 updateSRIm(hObject,handles);
+catch errorObj
+    errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
+end

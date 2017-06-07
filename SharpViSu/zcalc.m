@@ -28,17 +28,17 @@ end
 % p3 = [1.528435951770679 -6.192066836793174 -3.080485727036640 -1.249186389262468e+02 3.882493769662531e+02];
 
 if i == 1 % 642nm 
-    p = importdata([currentDir '\Z642.dat']);
+    p = importdata([currentDir '/Z642.dat']);
     A(:,6) = m * ( polyval(p, (A(:,8) - A(:,9))) );
 end
 
 if i == 2 % 532nm 
-    p = importdata([currentDir '\Z532.dat']);
+    p = importdata([currentDir '/Z532.dat']);
     A(:,6) = m * ( polyval(p, (A(:,8) - A(:,9))) );
 end
 
 if i == 3 % 488nm 
-    p = importdata([currentDir '\Z488.dat']);
+    p = importdata([currentDir '/Z488.dat']);
     A(:,6) = m * ( polyval(p, (A(:,8) - A(:,9))) );
 end
 end
