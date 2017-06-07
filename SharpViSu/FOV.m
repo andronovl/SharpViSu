@@ -1,5 +1,5 @@
 function [ fov ] = FOV( A )
-% find the size of the field of view with precision of 1 µm
+% find the size of the field of view with the precision of 1 µm
 
 if iscell(A)
     s = max(size(A));
