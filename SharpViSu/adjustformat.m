@@ -16,6 +16,7 @@ A(:,4:5) = A(:,4:5) * 100; % x, y in nm
 A(:,8:9) = A(:,8:9) * 100; % sigmas in nm
 
 elseif format == 2 % QuickPALM 
+if size(A,2) == 15
     p = A(1,5)/A(1,3); % pixel size in nm
     Anew = zeros(size(A,1),9);
     Anew(:,4:6) = A(:,5:7); %X,Y in nm
@@ -23,6 +24,15 @@ elseif format == 2 % QuickPALM
     Anew(:,2) = A(:,15) - 1;%frameID
     Anew(:,8) = sum(A(:,8:9),2) * p; % sigmaX in nm??
     Anew(:,9) = sum(A(:,10:11),2) * p; % sigmaY in nm??
+else
+    p = A(1,4)/A(1,2); % pixel size in nm
+    Anew = zeros(size(A,1),9);
+    Anew(:,4:6) = A(:,4:6); %X,Y in nm
+    Anew(:,7) = A(:,1); %intensity (convert to photons???)
+    Anew(:,2) = A(:,14) - 1;%frameID
+    Anew(:,8) = sum(A(:,7:8),2) * p; % sigmaX in nm??
+    Anew(:,9) = sum(A(:,9:10),2) * p; % sigmaY in nm??
+end
     A = sortrows(Anew);
     fr = A(1,2);
     ev = 1;
@@ -59,7 +69,7 @@ elseif format == 3 %RapidSTORM
            ev = ev + 1;
         end
     end
-elseif format == 4 %Localization microscopy of µManager
+elseif format == 4 %Localization microscopy of ÂµManager
     A((A(:,8)>10^6|A(:,8)<10),:) = [];%cut events with >10^6 or <10 photons
     Anew = zeros(size(A,1),9);
     Anew(:,4:5) = A(:,6:7); %X,Y in nm
