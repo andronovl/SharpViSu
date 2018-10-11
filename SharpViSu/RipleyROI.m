@@ -29,7 +29,7 @@ BW1 = imerode(BW, se);
 
 % run Ripley for the dataset
 % dr = in nm
-[ R, K, L, Lmr ] = Ripleypoly( Anew, BW1, dr, rmax, BW );
+[ R, K, L, Lmr ] = Ripleypoly( Anew, BW1, dr, rmax, p, BW );
 
 % run Monte Carlo
 if exist ('iter', 'var') && iter > 0
@@ -41,8 +41,8 @@ h = waitbar(0, 'Ripley Monte Carlo simulation');
 for k = 1:iter
         Ar = zeros(round((fov*fov) * size(Anew,1) / (bwarea(BW) * p^2)), 9);
         Ar(:,4:5) = rand(size(Ar, 1), 2) * fov;
-        Anewr = parroifilter(Ar, BW, 1);
-        [ ~, Kr(:,k), Lr(:,k), Lmrr(:,k) ] = Ripleypoly( Anewr, BW1, dr, rmax, BW );
+        Anewr = parroifilter(Ar, BW, 1, p);
+        [ ~, Kr(:,k), Lr(:,k), Lmrr(:,k) ] = Ripleypoly( Anewr, BW1, dr, rmax, p, BW );
         waitbar(k/iter, h, 'Ripley Monte Carlo simulation');
 end
         K(:, 2:3) = [mean(Kr, 2) - z * std(Kr, 0, 2), mean(Kr, 2) + z * std(Kr, 0, 2)];
@@ -51,4 +51,3 @@ end
         close(h);
 end
 end
-
