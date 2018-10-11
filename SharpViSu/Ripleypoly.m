@@ -1,4 +1,4 @@
-function [ R, K, L, Lminusr ] = Ripleypoly( A2, BW1, dr, rmax, BW2 )
+function [ R, K, L, Lminusr ] = Ripleypoly( A2, BW1, dr, rmax, p, BW2 )
 %Ripley Calculates Ripley's K, L and L-r functions within radii from dr to rmax with
 %step dr, for each event (a row) from the table of coordinates A2;
 %inside ROI = binary BW image
@@ -7,9 +7,10 @@ function [ R, K, L, Lminusr ] = Ripleypoly( A2, BW1, dr, rmax, BW2 )
 %input r in nm,
 %output in nm
 
-p = 18000/size(BW1, 1); % pixel size in nm
+% fov = FOV(A2);
+% p = fov/size(BW1, 1); % pixel size in nm
 
-A1 = parroifilter(A2, BW1, 1); % create A1 = BW1(A2)
+A1 = parroifilter(A2, BW1, 1, p); % create A1 = BW1(A2)
 Nsteps = round(rmax/dr);
 dist = pdist2(A1(:,4:5),A2(:,4:5));
 K = zeros(Nsteps+1,1);
@@ -34,4 +35,3 @@ Lminusr = L - R;
 %Lminusr(:,3) = 1.42*30/(size(A1,1));
 %Lminusr(:,4) = -1.42*30/(size(A1,1));
 end
-
