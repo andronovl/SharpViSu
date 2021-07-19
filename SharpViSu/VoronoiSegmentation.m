@@ -1,4 +1,4 @@
-function [ BW, clusters ] = VoronoiSegmentation( AB, thresh, p, limits )
+function [ BW, clusters ] = VoronoiSegmentation( AB, thresh, p, limits, fov )
 %Performs a segmentation of localization data using Voronoi diagram.
 %Voronoi cells with areas smaller than thresh will be kept and merged with
 %their neigbours; 
@@ -6,11 +6,14 @@ function [ BW, clusters ] = VoronoiSegmentation( AB, thresh, p, limits )
 %threshold on area; p, pixel size of binary image, limits = [NevMin,
 %NevMax] - exclude clusters with less or equal than NevMin or with equal or
 %more than NevMax events
-%(optional)
+%(optional); fov, focus of vision (same unit as AB coordinates and p)
 %Output: BW, segmented binary image; clusters, cell array with parameters
 %of segmented clusters: clusters{:,1} = x and y coordintes of vertices,
 %clusters{:,2} = number of localizations in the cluster, clusters{:,3} =
 %area of the cluster; , clusters{:,4} = equivalent eccentricity
+if ~exist('fov', 'var')
+    fov = 18000;
+end
 
 h = waitbar(0,'Building Voronoi diagram...');
 
@@ -134,7 +137,7 @@ end
 
 waitbar(0, h, 'Building segmented image...');
 
-s = 18000/p; %size of image
+s = fov/p; %size of image
 I1 = zeros(s);
 for i = 1:size(clusters,1)
     Area = 0;
