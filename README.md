@@ -24,7 +24,7 @@ Download and run <a href=https://github.com/andronovl/SharpViSu/tree/master/Inst
 
 <i> MATLAB source code (works under beforehand installed MATLAB environment)  </i>
 
-Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to the MATLAB search path. SharpViSu 2 was developed in MATLAB R2021b, but should work also in older versions. Toolboxes required.
+Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to the MATLAB search path. SharpViSu 2 was developed in MATLAB R2021b, but should work also in older versions. Toolboxes required: Image Processing Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox
 
 <a href="https://github.com/andronovl/SharpViSu/blob/master/SharpViSu%20user%20manual.pdf"> <b> SharpViSu User manual </b> </a>
 
