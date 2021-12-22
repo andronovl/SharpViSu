@@ -35,6 +35,8 @@ Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu>
 
 <a href="https://github.com/andronovl/SharpViSu/blob/master/SplitViSu%20manual.pdf"> <b> User manual for spectral demixing of SMLM data in SplitViSu </b> </a>
 
+<a href="https://github.com/andronovl/SharpViSu/tree/master/Data/SplitViSu"> <b> Test data for spectral demixing in SplitViSu </b> </a>
+
 <br>
 
 ## References 
