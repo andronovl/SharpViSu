@@ -1,5 +1,6 @@
 # SharpViSu
 Software for correction, evaluation and visualization of single-molecule localization microscopy (SMLM) data. 
+<a href="https://github.com/andronovl/SharpViSu/blob/master/SharpViSu%20user%20manual.pdf">  SharpViSu user manual  </a>
 
 <b>   SharpViSu 2 </b> includes:
 
