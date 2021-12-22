@@ -48,4 +48,22 @@ Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu>
 Andronov, L., Lutz, Y., Vonesch, J.-L. & Klaholz, B. P. SharpViSu: integrated analysis and segmentation of super-resolution microscopy data. <i>Bioinformatics</i> (2016) <a href="http://bioinformatics.oxfordjournals.org/content/early/2016/03/17/bioinformatics.btw123">doi:10.1093/bioinformatics/btw123</a>
 
 <br>
+
 Andronov, L., Orlov, I., Lutz, Y., Vonesch, J.-L. & Klaholz, B. P. ClusterViSu, a method for clustering of protein complexes by Voronoi tessellation in super-resolution microscopy. <i>Scientific Reports</i> <b>6</b>, 24084 (2016) <a href="http://www.nature.com/articles/srep24084">http://www.nature.com/articles/srep24084</a>
+
+<br>
+
+Andronov L., Michalon J., Ouararhni K., Orlov I., Hamiche A., Vonesch J-L, Klaholz B.P. 3DClusterViSu: 3D clustering analysis of super-resolution microscopy data by 3D Voronoi tessellations. <i>Bioinformatics</i> <b>34</b> (2018) <a href=https://academic.oup.com/bioinformatics/article/34/17/3004/4960045> https://doi.org/10.1093/bioinformatics/bty200 </a>
+
+<br>
+
+#### Examples of use
+Andronov, L., Ouararhni, K., Stoll, I., Klaholz, B.P., Hamiche, A. CENP-A nucleosome clusters form rosette-like structures around HJURP during G1. <i> Nat. Commun. </i> <b>10</b>, 4436 (2019) <a href="https://www.nature.com/articles/s41467-019-12383-3">https://doi.org/10.1038/s41467-019-12383-3</a>
+
+<br>
+
+Lemaître, C., Grabarz, A., Tsouroula, K., Andronov, L., Furst, A., Pankotai, T., Heyer, V., Rogier, M., Attwood, K M., Kessler, P., Dellaire, G., Klaholz, B., Reina-San-Martin, B., Soutoglou, E. Nuclear position dictates DNA repair pathway choice. <i>Genes. Dev.</i> <b>28</b>, 2450-2463 (2014) <a href="http://genesdev.cshlp.org/content/28/22/2450">https://doi.org/10.1101/gad.248369.114</a>
+
+<br>
+
+Andronov L., Vonesch J-L, Klaholz B.P. Practical Aspects of Super-Resolution Imaging and Segmentation of Macromolecular Complexes by dSTORM. <i> In: Poterszman A. (eds) Multiprotein Complexes. Methods in Molecular Biology, </i> <b>2247</b> 271-286 (2021) Humana, New York, NY. <a href="https://link.springer.com/protocol/10.1007/978-1-0716-1126-5_15">https://doi.org/10.1007/978-1-0716-1126-5_15</a>
