@@ -1,5 +1,5 @@
 # SharpViSu
-Matlab-based software for correction, evaluation and visualization of single-molecule localization microscopy (SMLM) data. 
+Software for correction, evaluation and visualization of single-molecule localization microscopy (SMLM) data. 
 
 <b>   SharpViSu 2 </b> includes:
 
@@ -11,19 +11,23 @@ Matlab-based software for correction, evaluation and visualization of single-mol
 
 ## Installation 
 
-<b><i> Stand-alone SharpViSu with SplitViSu & ClusterViSu for Windows:  </i></b>
+The software can be used either as a standalone application for Windows or as an application for MATLAB 
+
+<br>
+
+<b><i> Standalone SharpViSu with SplitViSu & ClusterViSu for Windows:  </i></b>
 
 Download and run <a href=https://github.com/andronovl/SharpViSu/tree/master/Installer> “Installer/SharpViSu_web_installer.exe” </a> and follow instructions. If not already installed, the MATLAB Compiler Runtime (mcr) will be downloaded from the web and installed automatically.
 
 <br>
 
-<b><i> Stand-alone SplitViSu or ClusterViSu for Windows:  </i></b>
+<b><i> Standalone SplitViSu or ClusterViSu for Windows:  </i></b>
 
 Download and run <a href=https://github.com/andronovl/SharpViSu/tree/master/Installer> “Installer/SplitViSu_web_installer.exe or ”Installer/SharpViSu_web_installer.exe" </a> and follow instructions. If not already installed, the MATLAB Compiler Runtime (mcr) will be downloaded from the web and installed automatically.
 
 <br>
 
-<b><i> MATLAB source code (works under beforehand installed MATLAB environment):  </i></b>
+<b><i> MATLAB application & source code (works from beforehand installed MATLAB environment):  </i></b>
 
 Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to the MATLAB search path. SharpViSu 2 was developed in MATLAB R2021b, but should work also in older versions. Toolboxes required: Image Processing Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox
 
