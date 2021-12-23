@@ -11,7 +11,7 @@ if format == 1 %.2d
     B(:,4) = A(:,2);
     dlmwrite(FPName, B, '\t');
 elseif format == 2 %.2dlp
-    B = zeros(size(A,1), 4);
+    B = zeros(size(A,1), 6);
     B(:,1:2) = A(:,4:5);
     B(:,3) = 2.355 * 240 ./ (eps + sqrt(A(:,7))); %FWHM precision
     B(:,4) = B(:,3);
@@ -19,13 +19,13 @@ elseif format == 2 %.2dlp
     B(:,6) = A(:,2);
     dlmwrite(FPName, B, '\t');
 elseif format == 3 %.3d
-    B = zeros(size(A,1), 4);
+    B = zeros(size(A,1), 5);
     B(:,1:3) = A(:,4:6);
     B(:,4) = A(:,7);
     B(:,5) = A(:,2);
     dlmwrite(FPName, B, '\t');
 elseif format == 4 %.3dlp
-    B = zeros(size(A,1), 4);
+    B = zeros(size(A,1), 8);
     B(:,1:3) = A(:,4:6);
     if A(1,8) ~= 0
         B(:,4) = 2.355 * 2 * A(:,8) ./ (eps + sqrt(A(:,7))); %FWHM precision X

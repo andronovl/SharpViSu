@@ -270,7 +270,7 @@ if graph == 1 % Z(deltaSigma)
 hold on
 for i = 1:3
     if ~isempty(An{i})
-plot(handles.axes1, Am{i}(:,2), Am{i}(:,1), ['.' color{i}], An{i}(:,4), polyval(p{i}, An{i}(:,4)), ['-' color{i}], 'MarkerSize', 6); % X = sigmaX-sigmaY, nm; Y = Z, nm
+plot(handles.axes1, Am{i}(:,2), Am{i}(:,1), ['.' color{i}], min(An{i}(:,4))-50:1:max(An{i}(:,4))+50, polyval(p{i}, min(An{i}(:,4))-50:1:max(An{i}(:,4))+50), ['-' color{i}], 'MarkerSize', 6); % X = sigmaX-sigmaY, nm; Y = Z, nm
     end
 end
 hold off
@@ -295,7 +295,7 @@ if graph == 1 % Z(deltaSigma)
 hold on
 for i = 1:3
     if ~isempty(An{i})
-plot(handles.axes1, An{i}(:,4), An{i}(:,1), ['.' color{i}], An{i}(:,4), polyval(p{i}, An{i}(:,4)), ['-' color{i}]); % X = sigmaX-sigmaY, nm; Y = Z, nm
+plot(handles.axes1, An{i}(:,4), An{i}(:,1), ['.' color{i}], min(An{i}(:,4))-50:1:max(An{i}(:,4))+50, polyval(p{i}, min(An{i}(:,4))-50:1:max(An{i}(:,4))+50), ['-' color{i}]); % X = sigmaX-sigmaY, nm; Y = Z, nm
 
     end
 end

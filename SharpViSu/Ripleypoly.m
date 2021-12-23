@@ -35,3 +35,4 @@ Lminusr = L - R;
 %Lminusr(:,3) = 1.42*30/(size(A1,1));
 %Lminusr(:,4) = -1.42*30/(size(A1,1));
 end
+

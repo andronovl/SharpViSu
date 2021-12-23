@@ -9,9 +9,21 @@ if isstruct(A)
 A = A.data;
 end
 fov = FOV(A);
-l = size(A, 1);
-Arand = A(randperm(l), :);
-lh = round(l/2);
+
+maxfr = A(end,2);
+blocks = floor(maxfr/100);
+order = (randperm(blocks)-1)'*100 + [1:100];
+order = order';
+order = order(:)-1;
+[~, Locb] = ismember(A(:,2), order);
+A(:,2) = Locb;
+A(A(:,2) == 0,:) = [];
+
+Arand = sortrows(A);
+
+%Arand = A(randperm(l), :);
+
+lh = round(size(Arand, 1)/2);
 A1 = Arand(1:lh, :);
 A2 = Arand(lh+1:end, :);
 if mode == 1 %hist
@@ -26,6 +38,9 @@ I2 = drawVor(A2, pix, fov);
 elseif mode == 4 %photon-Voronoi
 I1 = drawVorPh(A1, pix, fov);
 I2 = drawVorPh(A2, pix, fov);    
+elseif mode == 5 %sqrt(photon)-Voronoi
+I1 = drawVorPhSqrt(A1, pix, fov);
+I2 = drawVorPhSqrt(A2, pix, fov);    
 end
 w = tukeywin(fov/pix,0.25);
 w2 = w*w';

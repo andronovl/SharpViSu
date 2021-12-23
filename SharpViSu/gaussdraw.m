@@ -42,7 +42,7 @@ for i = 1:12
     yn{i} = y(kon:ken);
     phn{i} = ph(kon:ken);
 end
-for i = 1:12
+parfor i = 1:12
     Ia = zeros(s);
     xna = xn{i};
     yna = yn{i};

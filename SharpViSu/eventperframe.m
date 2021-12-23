@@ -1,17 +1,19 @@
-function [ evmax ] = eventperframe( A )
-% creates a matrix "evmax" showing the quantity of events in the
+function [ evmax ] = eventperframe( A, smooth )
+% creates a matrix "evmax" showing the number of events in the
 % corresponding frame (the frame = (row index - 1))
-la = size(A,1);
-evmax = zeros(A(end, 2) + 1, 1);
-frold = A(1, 2);
-for ka = 1:la
-fr = A(ka, 2);
-if fr ~= frold
-    evmax(fr) = A(ka-1, 3);
+if ~exist('smooth', 'var')
+    smooth = 1;
 end
-frold = fr;
+if smooth < 1
+    smooth = 1;
 end
-evmax(end) = A(la, 3);
-%evperfr = [1:size(evmax,1) evmax];
+    edges = 0:smooth:max(A(:,2))+1;
+    counts = histcounts(A(:,2),edges);
+if smooth ~= 1
+%     p = polyfit((0:smooth:max(A(:,2)))+0.5, counts, 2);
+%     evmax = polyval(p,0.5:(max(A(:,2))+0.5));
+    evmax = interp1(1:smooth:length(counts)*smooth, counts, 0.5:(max(A(:,2))+0.5),'linear');
+    evmax = evmax ./ smooth;
+else
+    evmax = counts;
 end
-

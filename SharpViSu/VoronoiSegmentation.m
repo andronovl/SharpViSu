@@ -209,4 +209,3 @@ BW = im2bw(I1);
 close(h);
 
 end
-

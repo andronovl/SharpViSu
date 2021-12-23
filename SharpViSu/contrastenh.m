@@ -252,7 +252,7 @@ mult = mult0;
 if norm
     for k = 1:2
     if ~isempty (I1{k}) && max(max(I1{k})) > 0
-        mult(k) = mult0(k) * 255 / max(max(I1{k}));
+        mult(k) = mult0(k) * 65535 / max(max(I1{k}));
     end
     end
 end
@@ -266,42 +266,43 @@ for i = 1 : 2
     I{i} = round(I{i});
   if ~monochr
     if strcmp(mapstr{i}, 'red')
-        map{i} = [(0:255)', zeros(256,2)]/255;
+        map{i} = [(0:65535)', zeros(65536,2)]/65535;
     elseif strcmp(mapstr{i}, 'green')
-        map{i} = [zeros(256,1), (0:255)', zeros(256,1)]/255;
+        map{i} = [zeros(65536,1), (0:65535)', zeros(65536,1)]/65535;
     elseif strcmp(mapstr{i}, 'blue')
-        map{i} = [zeros(256,2), (0:255)']/255;
+        map{i} = [zeros(65536,2), (0:65535)']/65535;
     elseif strcmp(mapstr{i}, 'gray')
-        map{i} = gray(256);
+        map{i} = gray(65536);
     elseif strcmp(mapstr{i}, 'hot')
-        map{i} = hot(256);
+        map{i} = hot(65536);
     elseif strcmp(mapstr{i}, 'hsv')
-        map{i} = hsv(256);
+        map{i} = hsv(65536);
     elseif strcmp(mapstr{i}, 'jet')
-        map{i} = jet(256);
+        map{i} = jet(65536);
     elseif strcmp(mapstr{i}, 'parula')
-        map{i} = parula(256);
+        map{i} = parula(65536);
     elseif strcmp(mapstr{i}, 'cool')
-        map{i} = cool(256);
+        map{i} = cool(65536);
     elseif strcmp(mapstr{i}, 'spring')
-        map{i} = spring(256);
+        map{i} = spring(65536);
     elseif strcmp(mapstr{i}, 'autumn')
-        map{i} = autumn(256);
+        map{i} = autumn(65536);
     elseif strcmp(mapstr{i}, 'summer')
-        map{i} = summer(256);
+        map{i} = summer(65536);
     elseif strcmp(mapstr{i}, 'winter')
-        map{i} = winter(256);
+        map{i} = winter(65536);
     elseif strcmp(mapstr{i}, 'bone')
-        map{i} = bone(256);
+        map{i} = bone(65536);
     elseif strcmp(mapstr{i}, 'copper')
-        map{i} = copper(256);
+        map{i} = copper(65536);
     elseif strcmp(mapstr{i}, 'pink')
-        map{i} = pink(256);
+        map{i} = pink(65536);
     end
         RGB0{i} = ind2rgb(I{i}, map{i});
         RGB0sh{i} = RGB0{i};
+        RGB0{i} = uint16(65535*RGB0{i});
   else
-        map{i} = gray(256);
+        map{i} = gray(65536);
         RGB0{i} = I{i};
         RGB0sh{i} = ind2rgb(I{i}, map{i});
    end
@@ -322,12 +323,8 @@ else
     RGB = zeros(900,900,3);
     RGBsh = zeros(900,900,3);
 end
-if ~monochr
-    RGB(RGB > 1) = 1;
-else
-    RGB(RGB > 255) = 255;
-end
-RGBsh(RGBsh > 255) = 255;
+RGB(RGB > 65535) = 65535;
+RGBsh(RGBsh > 65535) = 65535;
 iptsetpref('ImshowAxesVisible','on');
 
 if show ~= 3
@@ -357,8 +354,8 @@ if points
     plot(A(:,4),A(:,5),'.w', 'MarkerSize', 1);
 end
 hold off
-xlim([0 18000]);
-ylim([0 18000]);
+%xlim([0 18000]);
+%ylim([0 18000]);
 set(gca, 'YDir', 'reverse');
     end
 end
@@ -571,10 +568,16 @@ elseif ~drawcorr
 end
 if ~isempty(RGB)
 pathname = handles.folder;
-[FileName,PathName] = uiputfile({'*.tif'}, 'Save current image as', pathname);
+[FileName,PathName,indx] = uiputfile({'*.tif';'*.png';'*.*'}, 'Save current image as', pathname);
 if FileName ~= 0
 FPName=[PathName FileName];
-imwrite(RGB, FPName, 'Compression', 'lzw');
+if indx == 1 %tif
+imwrite(uint16(RGB), FPName, 'Compression', 'lzw');
+elseif indx == 2 %png
+imwrite(uint16(RGB), FPName, 'BitDepth', 16);
+elseif indx == 3 %other
+f = errordlg('Specify a supported file format','File Format Error');
+end
 end
 end
 

@@ -474,7 +474,9 @@ if (isempty(Anew{1}) && isempty(Anew{2})) || show == 1 || show == 2
     cla(handles.axes2);
     if show == 1 % show initial events
     hold on
+    if ~isempty(ABC{1})
     scatter(ABC{1}(:,4)/1000, ABC{1}(:,5)/1000, '.r', 'Parent', handles.axes2);
+    end
     if ~isempty(ABC{2})
     scatter(ABC{2}(:,4)/1000, ABC{2}(:,5)/1000, '.g', 'Parent', handles.axes2);
     end
@@ -499,12 +501,12 @@ if ~isempty(Anew{1}) || ~isempty(Anew{2})
     cla(handles.axes2);
     hold on
     if ~isempty (Anew{1})
-    scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, 20, 'sr', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
-    scatter(Bnew{1}(:,1)/1000, Bnew{1}(:,2)/1000, 20, 'sg', 'Parent', handles.axes2, 'MarkerFaceColor', 'g');
+    scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, '.r', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
+    scatter(Bnew{1}(:,1)/1000, Bnew{1}(:,2)/1000, '.g', 'Parent', handles.axes2, 'MarkerFaceColor', 'g');
     end
     if ~isempty (Anew{2})
-    scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, 30, 'dr', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
-    scatter(Bnew{2}(:,1)/1000, Bnew{2}(:,2)/1000, 30, 'db', 'Parent', handles.axes2, 'MarkerFaceColor', 'b');
+    scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, '.r', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
+    scatter(Bnew{2}(:,1)/1000, Bnew{2}(:,2)/1000, '.b', 'Parent', handles.axes2, 'MarkerFaceColor', 'b');
     end
     hold off
     end
@@ -515,13 +517,13 @@ if ~isempty(Anew{1}) || ~isempty(Anew{2})
     hold on
     if ~isempty (Anew{1})
     Bcorr{1} = transformPointsInverse(tform{1}, Bnew{1}/1000);
-    scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, 20, 'sr', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
-    scatter(Bcorr{1}(:,1), Bcorr{1}(:,2), 20, 'sg', 'Parent', handles.axes2, 'MarkerFaceColor', 'g');
+    scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, '.r', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
+    scatter(Bcorr{1}(:,1), Bcorr{1}(:,2), '.g', 'Parent', handles.axes2, 'MarkerFaceColor', 'g');
     end
     if ~isempty (Anew{2})
     Bcorr{2} = transformPointsInverse(tform{2}, Bnew{2}/1000);
-    scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, 30, 'dr', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
-    scatter(Bcorr{2}(:,1), Bcorr{2}(:,2), 30, 'db', 'Parent', handles.axes2, 'MarkerFaceColor', 'b');
+    scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, '.r', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
+    scatter(Bcorr{2}(:,1), Bcorr{2}(:,2), '.b', 'Parent', handles.axes2, 'MarkerFaceColor', 'b');
     end
     hold off
         end
@@ -531,13 +533,13 @@ if ~isempty(Anew{1}) || ~isempty(Anew{2})
         hold on
     if ~isempty (Anew{1}) && ~isempty (tform{1})
     Bcorr{1} = transformPointsInverse(tform{1}, Bnew{1}/1000);
-    scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, 20, 'sr', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
-    scatter(Bcorr{1}(:,1), Bcorr{1}(:,2), 20, 'sg', 'Parent', handles.axes2, 'MarkerFaceColor', 'g');
+    scatter(Anew{1}(:,1)/1000, Anew{1}(:,2)/1000, '.r', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
+    scatter(Bcorr{1}(:,1), Bcorr{1}(:,2), '.g', 'Parent', handles.axes2, 'MarkerFaceColor', 'g');
     end
     if ~isempty (Anew{2}) && ~isempty (tform{2})
     Bcorr{2} = transformPointsInverse(tform{2}, Bnew{2}/1000);
-    scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, 30, 'dr', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
-    scatter(Bcorr{2}(:,1), Bcorr{2}(:,2), 30, 'db', 'Parent', handles.axes2, 'MarkerFaceColor', 'b');
+    scatter(Anew{2}(:,1)/1000, Anew{2}(:,2)/1000, '.r', 'Parent', handles.axes2, 'MarkerFaceColor', 'r');
+    scatter(Bcorr{2}(:,1), Bcorr{2}(:,2), '.b', 'Parent', handles.axes2, 'MarkerFaceColor', 'b');
     end
     hold off
         end
@@ -673,7 +675,7 @@ for i = 1:2
     if ~isempty(ABC{i+1})
 dist = pdist2(ABC{1}(:,4:5), ABC{i+1}(:,4:5));
 
-Bin = dist < R; % find closets pairs of points
+Bin = dist < R; % find closest pairs of points
 % delete points if there are more than 1 point from the other channel within R
 S1 = find(sum(Bin,1) > 1); % index of the column to put all zeros
 S2 = find(sum(Bin,2) > 1); % index of the row to put all zeros

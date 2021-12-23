@@ -12,8 +12,12 @@ end
 if ~exist('fov', 'var') || fov == 0
     fov = FOV(A);
 end
-Anew(:,1) = A(ko:ke,5);
-Anew(:,2) = A(ko:ke,4);
+if ~isempty(A)
+    Anew(:,1) = A(ko:ke,5);
+    Anew(:,2) = A(ko:ke,4);
+else
+    Anew = [-100,-100];
+end
 edges = 0:p:fov-p;
 edges = {edges, edges};
 I = hist3 (Anew,'Edges', edges);
