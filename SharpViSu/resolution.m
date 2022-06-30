@@ -12,7 +12,7 @@ fov = FOV(A);
 
 maxfr = A(end,2);
 blocks = floor(maxfr/100);
-order = (randperm(blocks)-1)'*100 + [1:100];
+order = (randperm(blocks)-1)'*100 + (1:100);
 order = order';
 order = order(:)-1;
 [~, Locb] = ismember(A(:,2), order);
