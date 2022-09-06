@@ -2,7 +2,7 @@
 Software for correction, evaluation and visualization of single-molecule localization microscopy (SMLM) data. 
 <a href="https://github.com/andronovl/SharpViSu/blob/master/SharpViSu%20user%20manual.pdf">  SharpViSu user manual  </a>
 
-<b>   SharpViSu 2 </b> includes:
+<b>   SharpViSu 2 </b> also includes:
 
 <b> • SplitViSu </b> for spectral demixing of SMLM data, acquired with a dichroic image splitter: <a href="https://github.com/andronovl/SharpViSu/blob/master/SplitViSu%20manual.pdf">  SplitViSu user manual  </a>
 
@@ -28,13 +28,13 @@ Download and run <a href=https://github.com/andronovl/SharpViSu/tree/master/Inst
 
 <br>
 
-<b><i> MATLAB application & source code (works from beforehand installed MATLAB environment):  </i></b>
+<b><i> MATLAB application & source code (works under your MATLAB environment):  </i></b>
 
 Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to the MATLAB search path. SharpViSu 2 was developed in MATLAB R2021b, but should work also in older versions. Toolboxes required: Image Processing Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox
 
 <br>
 
-## Usage 
+## User manuals 
 
 <a href="https://github.com/andronovl/SharpViSu/blob/master/SharpViSu%20user%20manual.pdf"> <b> SharpViSu User manual </b> </a>
 
@@ -57,6 +57,10 @@ Andronov L., Michalon J., Ouararhni K., Orlov I., Hamiche A., Vonesch J-L, Klaho
 
 <br>
 
+Andronov, L., Genthial, R., Hentsch, D., & Klaholz, B. P. A spectral demixing method for high-precision multi-color localization microscopy. <i>bioRxiv</i> (2021) <a href="https://www.biorxiv.org/content/10.1101/2021.12.23.473862v1.full">https://doi.org/10.1101/2021.12.23.473862</a>
+
+<br>
+
 #### Examples of use
 Andronov, L., Ouararhni, K., Stoll, I., Klaholz, B.P., Hamiche, A. CENP-A nucleosome clusters form rosette-like structures around HJURP during G1. <i> Nat. Commun. </i> <b>10</b>, 4436 (2019) <a href="https://www.nature.com/articles/s41467-019-12383-3">https://doi.org/10.1038/s41467-019-12383-3</a>
 
@@ -67,3 +71,7 @@ Lemaître, C., Grabarz, A., Tsouroula, K., Andronov, L., Furst, A., Pankotai, T.
 <br>
 
 Andronov L., Vonesch J-L, Klaholz B.P. Practical Aspects of Super-Resolution Imaging and Segmentation of Macromolecular Complexes by dSTORM. <i> In: Poterszman A. (eds) Multiprotein Complexes. Methods in Molecular Biology, </i> <b>2247</b> 271-286 (2021) Humana, New York, NY. <a href="https://link.springer.com/protocol/10.1007/978-1-0716-1126-5_15">https://doi.org/10.1007/978-1-0716-1126-5_15</a>
+
+<br>
+
+Andronov, L., Genthial, R., Hentsch, D., & Klaholz, B. P. A spectral demixing method for high-precision multi-color localization microscopy. <i>bioRxiv</i> (2021) <a href="https://www.biorxiv.org/content/10.1101/2021.12.23.473862v1.full">https://doi.org/10.1101/2021.12.23.473862</a>
