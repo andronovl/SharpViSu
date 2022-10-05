@@ -16,21 +16,21 @@ The software can be used either as a standalone application for Windows or as an
 
 <br>
 
-<b><i> Standalone SharpViSu with SplitViSu & ClusterViSu for Windows:  </i></b>
+<b><i> Standalone SharpViSu with SplitViSu & ClusterViSu for Windows (recommended):  </i></b>
 
-Download and run <a href=https://github.com/andronovl/SharpViSu/tree/master/Installer> “Installer/SharpViSu_web_installer.exe” </a> and follow instructions. If not already installed, the MATLAB Compiler Runtime (mcr) will be downloaded from the web and installed automatically.
+Download and run the latest version of <a href=https://github.com/andronovl/SharpViSu/tree/master/Installer> “Installer/SharpViSu_web_installer.exe” </a> and follow instructions. If not already installed, the MATLAB Compiler Runtime (mcr) will be downloaded from the web and installed automatically.
 
 <br>
 
 <b><i> Standalone SplitViSu or ClusterViSu for Windows:  </i></b>
 
-Download and run <a href=https://github.com/andronovl/SharpViSu/tree/master/Installer> “Installer/SplitViSu_web_installer.exe or ”Installer/SharpViSu_web_installer.exe" </a> and follow instructions. If not already installed, the MATLAB Compiler Runtime (mcr) will be downloaded from the web and installed automatically.
+Download and run the latest version of  <a href=https://github.com/andronovl/SharpViSu/tree/master/Installer> “Installer/SplitViSu_web_installer.exe or ”Installer/ClusterViSu_web_installer.exe" </a> and follow instructions. If not already installed, the MATLAB Compiler Runtime (mcr) will be downloaded from the web and installed automatically.
 
 <br>
 
 <b><i> MATLAB application & source code (works under your MATLAB environment):  </i></b>
 
-Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to the MATLAB search path. SharpViSu 2 was developed in MATLAB R2021b, but should work also in older versions. Toolboxes required: Image Processing Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox
+Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to your MATLAB search path. SharpViSu v2 was developed in MATLAB R2021b, but should work also in older versions. Toolboxes required: Image Processing Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox
 
 <br>
 
