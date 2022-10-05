@@ -92,15 +92,8 @@ elseif format == 4 %Localization microscopy of µManager
         end
     end
     
-elseif format == 5 %ThunderSTORM
-    if size (A,2) == 9 %if 2D
-    Anew = zeros(size(A,1),9);
-    Anew(:,4:5) = A(:,3:4); %X,Y in nm
-    Anew(:,7) = A(:,6); %photons
-    Anew(:,8) = A(:,5); %sigma
-    Anew(:,9) = A(:,5); %sigma
-    Anew(:,2) = A(:,2)-1; %frameID
-    A = Anew;
+    elseif format == 5 %ThunderSTORM
+
     fr = A(1,2);
     ev = 1;
     %new eventIDs
@@ -114,29 +107,6 @@ elseif format == 5 %ThunderSTORM
            A(i,3) = ev;
            ev = ev + 1;
         end
-    end
-    else %3D
-    Anew = zeros(size(A,1),9);
-    Anew(:,4:6) = A(:,3:5); %X,Y in nm
-    Anew(:,7) = A(:,9); %photons
-    Anew(:,8) = A(:,7); %sigma
-    Anew(:,9) = A(:,8); %sigma
-    Anew(:,2) = A(:,2)-1; %frameID
-    A = Anew;
-    fr = A(1,2);
-    ev = 1;
-    %new eventIDs
-    for i = 1:size(A,1)
-        if A(i,2) == fr
-           A(i,3) = ev;
-           ev = ev + 1;
-        else
-           ev = 1;
-           fr = A(i,2);
-           A(i,3) = ev;
-           ev = ev + 1;
-        end
-    end
     end
     
     elseif format == 6 %ViSP
