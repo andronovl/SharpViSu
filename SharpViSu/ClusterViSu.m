@@ -1805,10 +1805,16 @@ if isfield(handles, 'folder')
     pathname = handles.folder;
     [filename, pathname] = uigetfile({'*.csv'; '*.xsl'; '*.txt'}, text{channel}, pathname);
 else
-[filename, pathname] = uigetfile({'*.csv'; '*.xsl'; '*.txt'}, text{channel});
+    [filename, pathname] = uigetfile({'*.csv'; '*.xsl'; '*.txt'}, text{channel});
 end
 if pathname ~= 0
-A = importdata([pathname filename]);
+
+A = readtable([pathname filename], 'FileType', 'delimitedtext');
+if ~ismember('z_nm_', A.Properties.VariableNames)
+    A = [zeros(size(A,1),1) A.frame-1 zeros(size(A,1),1) A.x_nm_ A.y_nm_ zeros(size(A,1),1) A.intensity_photon_ A.sigma_nm_ A.sigma_nm_];
+else
+    A = [zeros(size(A,1),1) A.frame-1 zeros(size(A,1),1) A.x_nm_ A.y_nm_ A.z_nm_ A.intensity_photon_ A.sigma1_nm_ A.sigma2_nm_];
+end
 
 if isstruct(A)
 A = A.data;
