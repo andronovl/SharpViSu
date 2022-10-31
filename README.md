@@ -30,7 +30,9 @@ Download and run the latest version of  <a href=https://github.com/andronovl/Sha
 
 <b><i> MATLAB application & source code (works under your MATLAB environment):  </i></b>
 
-Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to your MATLAB search path. SharpViSu v2 was developed in MATLAB R2021b, but should work also in older versions. Toolboxes required: Image Processing Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox
+<b>Please use MATLAB R2021b for optimal performance of SplitViSu!</b> In newer MATLAB versions there is a bug that makes it difficult to modify ROIs within the GUI.
+
+Add folder <a href=https://github.com/andronovl/SharpViSu/tree/master/SharpViSu> “SharpViSu” </a> to your MATLAB search path. SharpViSu v2 was developed in MATLAB R2021b. Toolboxes required: Image Processing Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox.
 
 <br>
 
@@ -57,7 +59,7 @@ Andronov L., Michalon J., Ouararhni K., Orlov I., Hamiche A., Vonesch J-L, Klaho
 
 <br>
 
-Andronov, L., Genthial, R., Hentsch, D., & Klaholz, B. P. A spectral demixing method for high-precision multi-color localization microscopy. <i>bioRxiv</i> (2021) <a href="https://www.biorxiv.org/content/10.1101/2021.12.23.473862v1.full">https://doi.org/10.1101/2021.12.23.473862</a>
+Andronov, L., Genthial, R., Hentsch, D., & Klaholz, B. P. splitSMLM, a spectral demixing method for high-precision multi-color localization microscopy applied to nuclear pore complexes. <i>Commun. Biol.</i> (2022) <a href="https://www.nature.com/articles/s42003-022-04040-1">https://doi.org/10.1038/s42003-022-04040-1</a>
 
 <br>
 
@@ -74,4 +76,4 @@ Andronov L., Vonesch J-L, Klaholz B.P. Practical Aspects of Super-Resolution Ima
 
 <br>
 
-Andronov, L., Genthial, R., Hentsch, D., & Klaholz, B. P. A spectral demixing method for high-precision multi-color localization microscopy. <i>bioRxiv</i> (2021) <a href="https://www.biorxiv.org/content/10.1101/2021.12.23.473862v1.full">https://doi.org/10.1101/2021.12.23.473862</a>
+Andronov, L., Genthial, R., Hentsch, D., & Klaholz, B. P. splitSMLM, a spectral demixing method for high-precision multi-color localization microscopy applied to nuclear pore complexes. <i>Commun. Biol.</i> (2022) <a href="https://www.nature.com/articles/s42003-022-04040-1">https://doi.org/10.1038/s42003-022-04040-1</a>
