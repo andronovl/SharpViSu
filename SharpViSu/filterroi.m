@@ -20,9 +20,9 @@ for k = 1:la
     x = a(k,2);
     y = a(k,1);
     if x >= minmax(1,1) && x <= minmax(2,1) && y >= minmax(1,2) && y <= minmax(2,2)
-for m=1:s(2) % x
+for m=1:s(1) % x
 if (x > p*(m-1))&&(x <= p*m)
-for n=1:s(1) % y
+for n=1:s(2) % y
     if (y > p*(n-1))&&(y <= p*n)
         if ~BW(m,n)
             Anew(k, :) = z;
@@ -49,9 +49,9 @@ for k = 1:la
     x = a(k,2);
     y = a(k,1);
     if x >= minmax(1,1) && x <= minmax(2,1) && y >= minmax(1,2) && y <= minmax(2,2)
-for m=1:s(2) % x
+for m=1:s(1) % x
 if (x > p*(m-1))&&(x <= p*m)
-for n=1:s(1) % y
+for n=1:s(2) % y
     if (y > p*(n-1))&&(y <= p*n)
         if BW(m,n)
            Anew(k, :) = z;
