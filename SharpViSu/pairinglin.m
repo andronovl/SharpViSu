@@ -1,4 +1,4 @@
-function [A1new, B1new] = pairinglin(A, B, prad)
+function [A1new, B1new] = pairinglin(A, B, prad, pradz)
 
 f = waitbar(0, 'Pairing...');
 A1n = cell(A(end,2)-A(1,2)+1,1);
@@ -25,6 +25,11 @@ for i = 1:min(size(A1n,1),size(B1n,1))
     [D,I] = pdist2(B1n{i}(:,4:5), A1n{i}(:,4:5),'euclidean','Smallest',1);
     A1new{i} = A1n{i}(D <=prad,:);
     B1new{i} = B1n{i}(I(D <=prad),:);
+    if exist("pradz","var")
+        del = abs(A1new{i}(:,6) - B1new{i}(:,6)) >  pradz;
+        A1new{i}(del, :) = [];
+        B1new{i}(del, :) = [];
+    end
     end
     if mod(i,5000) == 0
         waitbar(2/3 + i/size(A1n,1)/3,f);
