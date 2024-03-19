@@ -38,7 +38,8 @@ end
 M = M * p; %convert to nanometers
 
 % interpolate Anew to M - v4 is too slow, natural OK
-M(:,3) = griddata(Avor(:,4), Avor(:,5), Avor(:,10), M(:,1), M(:,2), 'natural');
+%M(:,3) = griddata(Avor(:,4), Avor(:,5), Avor(:,10), M(:,1), M(:,2), 'natural');
+M(:,3) = griddata(Avor(:,4), Avor(:,5), Avor(:,10), M(:,1), M(:,2), 'cubic');
 
 %delete negative values
 M(M(:,3) < 0 , 3) = 0;
