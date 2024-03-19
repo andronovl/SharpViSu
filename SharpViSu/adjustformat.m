@@ -5,7 +5,7 @@ if isstruct(A)
 A = A.data;
 end
 
-if format == 1 % LAS AF
+if format == 3 % LAS AF
     if sum(A(:, 7)) == 0 % check if old Leica format
         Anew = A;
         Anew(:, 6) = A(:,7);
@@ -15,7 +15,7 @@ if format == 1 % LAS AF
 A(:,4:5) = A(:,4:5) * 100; % x, y in nm
 A(:,8:9) = A(:,8:9) * 100; % sigmas in nm
 
-elseif format == 2 % QuickPALM 
+elseif format == 4 % QuickPALM 
 if size(A,2) == 15
     p = A(1,5)/A(1,3); % pixel size in nm
     Anew = zeros(size(A,1),9);
@@ -49,7 +49,7 @@ end
         end
     end
     
-elseif format == 3 %RapidSTORM
+elseif format == 5 %RapidSTORM
     Anew = zeros(size(A,1),9);
     Anew(:,4:5) = A(:,1:2); %X,Y in nm
     Anew(:,7) = A(:,4); %intensity (convert to photons???)
@@ -70,7 +70,7 @@ elseif format == 3 %RapidSTORM
         end
     end
     
-elseif format == 4 %Localization microscopy of 然anager
+elseif format == 6 %Localization microscopy of 繕Manager
     A((A(:,8)>10^6|A(:,8)<10),:) = [];%cut events with >10^6 or <10 photons
     Anew = zeros(size(A,1),9);
     Anew(:,4:5) = A(:,6:7); %X,Y in nm
@@ -92,7 +92,7 @@ elseif format == 4 %Localization microscopy of 然anager
         end
     end
     
-    elseif format == 5 %ThunderSTORM
+    elseif format == 2 %ThunderSTORM
 
     fr = A(1,2);
     ev = 1;
@@ -109,7 +109,7 @@ elseif format == 4 %Localization microscopy of 然anager
         end
     end
     
-    elseif format == 6 %ViSP
+    elseif format == 7 %ViSP
         if size (A,2) == 4 %if 2d
             Anew = zeros(size(A,1),9);
             Anew(:,4:5) = A(:,1:2); %X,Y in nm
@@ -134,7 +134,7 @@ elseif format == 4 %Localization microscopy of 然anager
         A = sortrows(Anew); 
         
         
-    elseif format == 7 %Zeiss ZEN
+    elseif format == 8 %Zeiss ZEN
         Anew = zeros(size(A,1),9);
         Anew(:,4:5) = A(:,5:6); %X,Y in nm
         Anew(:,7) = A(:,8); %photons
