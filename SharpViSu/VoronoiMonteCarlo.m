@@ -4,7 +4,11 @@ function [ Histograms, inters ] = VoronoiMonteCarlo( A, BW, iter, signif )
 fov = FOV(A);
 p = fov/size(BW,1);% pixel size of the mask in nm
 % cutting the eventlist
-Anew = parroifilter(A, BW, 1, p);
+if size(BW, 2) > 2
+    Anew = parroifilter(A, BW, 1, p);
+elseif size(BW, 2) == 2
+    Anew = A(inROI(images.roi.Freehand(Position = BW), A(:,4), A(:,5)),:);
+end
 Vor = VorArea_ia( Anew );
 S = Vor{1};
 %figure; hist(Voronoi{1}(Voronoi{1}<5*median(Voronoi{1}(Voronoi{1}<Inf))),round(2*(length(Voronoi{1}))^(1/3)));
@@ -14,25 +18,31 @@ if exist ('iter', 'var') && iter > 0
     h = waitbar(0, 'Voronoi Monte Carlo simulation');  
     z = norminv(1-(100-signif)*0.01/2); % z for given significance level (signif %)
     for j = 1:iter
-        Ar = zeros(round((fov*fov) * size(Anew,1) / (bwarea(BW) * p^2)), 9);
-        Ar(:,4:5) = rand(size(Ar, 1), 2) * fov;
-        Anewr = parroifilter(Ar, BW, 1);
+        if size(BW, 2) > 2
+            Ar = zeros(round((fov*fov) * size(Anew,1) / (bwarea(BW) * p^2)), 9);
+            Ar(:,4:5) = rand(size(Ar, 1), 2) * fov;
+            Anewr = parroifilter(Ar, BW, 1);
+        elseif size(BW, 2) == 2
+            Ar = zeros(round((fov*fov) * size(Anew,1) / polyarea(BW(:,1), BW(:,2))), 9);
+            Ar(:,4:5) = rand(size(Ar, 1), 2) * fov;
+            Anewr = Ar(inROI(images.roi.Freehand(Position = BW), Ar(:,4), Ar(:,5)),:);
+        end
          Vorr = VorArea_ia( Anewr );
          Sr{j} = Vorr{1};
         waitbar(j/iter, h, 'Voronoi Monte Carlo simulation');
     end
 
-Nbins = round(2*(size(S,1))^(1/3));
-lim = 3*median(Sr{1}(Sr{1}<Inf));
-[counts, centers] = hist(S(S<lim),Nbins);
+Nbins = round(2 * (size(S,1)) ^ (1/3));
+lim = 3 * median(Sr{1}(Sr{1} < Inf));
+[counts, centers] = hist(S(S < lim), Nbins);
 counts_r = zeros(iter, Nbins);
 for j=1:iter
     [counts_r(j,:), ~] = hist(Sr{j}(Sr{j}<lim),centers);
 end
 close(h);
 
-MeanCounts = mean(counts_r);
-StdCounts = std(counts_r);
+MeanCounts = mean(counts_r,1);
+StdCounts = std(counts_r,0,1);
 
 %ConfidenceInterval = [MeanCounts', (MeanCounts - z * StdCounts)', (MeanCounts + z * StdCounts)'];
 
