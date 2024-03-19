@@ -291,8 +291,8 @@ I = cell(2,NZ); % I = {channel, Z}
 
 for i = 1 : 2
 if ~isempty (AB{i})
-    I1 = slice( AB{i}, pixsizez, pixsizexy, fov );
-    I(i,:) = I1;
+    I1 = slices( AB{i}, pixsizez, pixsizexy, fov );
+    I(i,:) = {I1};
 else
     I(i,1:NZ) = {zeros(fov/pixsizexy)};
 end
@@ -315,37 +315,6 @@ updateimage(hObject, handles);
 
 catch errorObj
     errordlg(getReport(errorObj,'extended','hyperlinks','off'),'Error');
-end
-
-
-
-
-function [Image] = slice (A, dz, pixsize, fov )
-% cuts the eventlist on slices in Z and reconstructs an image in each
-% Z-plane
-% in nm
-NZ = round(800/dz); % number of slices in Z
-Image = cell (1, NZ);
-l = size(A,1); % number of rows
-n = ones(NZ,1);
-Anew = cell(NZ,1);
-for k = 1:l
-    for i = 1:NZ
-        b = i - NZ / 2;
-    if (A(k,6) > dz * (b - 1)) && (A(k,6) <= dz * b)
-        Anew{i}(n(i), :) = A(k,:);
-        n(i) = n(i) + 1;
-    end
-    end
-end
-%parfor i = 1:NZ
-for i = 1:NZ
-    if ~isempty(Anew{i})
-I = drpar(Anew{i}, pixsize, fov);
-Image{i} = I;
-    else
-Image{i} = zeros(fov/pixsize);
-    end
 end
 
 
