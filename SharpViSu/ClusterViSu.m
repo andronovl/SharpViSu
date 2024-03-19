@@ -545,7 +545,7 @@ if isfield(handles, 'Ripley')
             end
             xlim(handles.axes2, [0, max(Histograms(:,1))]);
             ylim(handles.axes2, [0, max(max(Histograms(:,2:end)))]);
-            set(handles.text42, 'String', 'Voronoi polygon area, nm²');
+            set(handles.text42, 'String', 'Voronoi polygon area, nmÂ²');
             end
     end
 end
@@ -574,7 +574,7 @@ if show == 1 % cluster area
     set(handles.text26, 'String', mean(area));
     set(handles.text16, 'String', median(area));
     set(handles.text18, 'String', std(area));
-    set(handles.text46, 'String', 'cluster area, nm²');
+    set(handles.text46, 'String', 'cluster area, nmÂ²');
 elseif show == 2 % diameter
     if mode == 4
         diam = 2 * sqrt(stats(:,2)/pi);
@@ -616,7 +616,7 @@ elseif show == 4 % events per cluster
     set(handles.text46, 'String', 'number of events in cluster');
 elseif show == 5 % density
     if mode == 4
-        Dens = 1000 * stats(:,1) ./ stats(:,2); % events/µm^2
+        Dens = 1000 * stats(:,1) ./ stats(:,2); % events/Âµm^2
     else
         I0 = handles.I0{channel};
         s = size(stats, 1);
@@ -625,14 +625,14 @@ elseif show == 5 % density
             ind = stats(i).PixelIdxList;
             NBeventsi = sum(I0(ind));
             area = stats(i).Area;
-            Dens(i) = NBeventsi/(area * (p * 0.001)^2); % events/µm^2
+            Dens(i) = NBeventsi/(area * (p * 0.001)^2); % events/Âµm^2
         end
     end
     hist(Dens, bins, 'Parent', handles.axes5);
     set(handles.text26, 'String', mean(Dens));
     set(handles.text16, 'String', median(Dens));
     set(handles.text18, 'String', std(Dens));
-    set(handles.text46, 'String', 'density of events in cluster, 1/µm');
+    set(handles.text46, 'String', 'density of events in cluster, 1/Âµm');
 end
 end
 
@@ -700,10 +700,15 @@ if mode ~= 4
         Binary = im2bw(Binary, 0.5);
     if water
         D = -bwdist(~Binary);
-        D = imhmin(D, minima);
-        D(~Binary) = -Inf;
+%         D = imhmin(D, minima);
+%         D(~Binary) = -Inf;
+%         L = watershed(D);
+%         Binary(L == 0) = 0;
+        mask = imextendedmin(D,minima);
+        D = imimposemin(D,mask);
         L = watershed(D);
         Binary(L == 0) = 0;
+
     end
     CC = bwconncomp(Binary);
     %CCraw = CC;
@@ -1298,10 +1303,10 @@ end
     for i = 1:s
         ind = stats(i).PixelIdxList;
         NBeventsi = sum(I0(ind));
-        Dens(i) = NBeventsi/(area(i) * 0.001^2); % events/µm^2
+        Dens(i) = NBeventsi/(area(i) * 0.001^2); % events/Âµm^2
     end 
  else
-     Dens = 1000 * stats(:,1) ./ stats(:,2); % events/µm^2
+     Dens = 1000 * stats(:,1) ./ stats(:,2); % events/Âµm^2
  end
     h1=figure('visible', 'off');
     hist(Dens, bins);
@@ -1313,7 +1318,7 @@ FPName=[dir 'density_in_cluster_red_' mea '_' med '_' st '.png'];
 elseif channel == 2 %green eventlist
 FPName=[dir 'density_in_cluster_green_' mea '_' med '_' st '.png'];
 end
-    xlabel('density of events in cluster, 1/µm')
+    xlabel('density of events in cluster, 1/Âµm')
     ylabel('occurrence')
     hgexport(h1, FPName, hgexport('factorystyle'), 'Format', 'png');
     close(h1);
@@ -1352,19 +1357,32 @@ text{1} = '642-nm eventlist';
 text{2} = '488/532-nm eventlist';
 if isfield(handles, 'folder')
     pathname = handles.folder;
-    [filename, pathname] = uigetfile({'*.ascii'; '*.txt'; '*.ascii'}, text{channel}, pathname);
+    [filename, pathname] = uigetfile({'*.ascii;*.bin'; '*.*'}, text{channel}, pathname);
 else
-[filename, pathname] = uigetfile({'*.ascii'; '*.txt'; '*.ascii'}, text{channel});
+[filename, pathname] = uigetfile({'*.ascii;*.bin'; '*.*'}, text{channel});
 end
 if pathname ~= 0
-A = importdata([pathname filename]);
+    if all(filename(end-3:end) == '.bin')
+        fileID = fopen([pathname filename]);
+        A = fread(fileID, 'uint32');
+        A = reshape(A, 9, size(A,1)/9);
+        A = A';
+        fileID = fopen([pathname filename]);
+        B = fread(fileID, 'single');
+        B = reshape(B, 9, size(B,1)/9);
+        B = B';
+        A(:,4:9) = B(:,4:9);
+        fclose(fileID);
+    else
+        A = importdata([pathname filename]);
+    end
 
 if isstruct(A)
 A = A.data;
 end
 
 % adjust the format to the standard
-A = adjustformat(A, 1);
+A = adjustformat(A, 3);
 
 handles.folder = pathname;
 handles.AB{channel} = A;
@@ -1406,7 +1424,7 @@ A = A.data;
 end
 
 % adjust the format to the standard
-A = adjustformat(A, 2);
+A = adjustformat(A, 4);
 
 handles.folder = pathname;
 handles.AB{channel} = A;
@@ -1447,7 +1465,7 @@ A = A.data;
 end
 
 % adjust the format to the standard
-A = adjustformat(A, 3);
+A = adjustformat(A, 5);
 
 handles.folder = pathname;
 handles.AB{channel} = A;
@@ -1710,14 +1728,15 @@ else
 [filename, pathname] = uigetfile({'*.ascii'; '*.txt'; '*.ascii'}, text{channel});
 end
 if pathname ~= 0
-A = importdata([pathname filename]);
+    A = readtable([filename, pathname],'DecimalSeparator',',');
+    A = table2array(A);
 
 if isstruct(A)
 A = A.data;
 end
 
 % adjust the format to the standard
-A = adjustformat(A, 4);
+A = adjustformat(A, 6);
 
 handles.folder = pathname;
 handles.AB{channel} = A;
@@ -1745,17 +1764,21 @@ text{1} = 'red eventlist';
 text{2} = 'green eventlist';
 if isfield(handles, 'folder')
     pathname = handles.folder;
-    [filename, pathname] = uigetfile({'*.ascii'; '*.txt'; '*.ascii'}, text{channel}, pathname);
+    [filename, pathname] = uigetfile({'*.ascii;*.mat'; '*.*'}, text{channel}, pathname);
 else
-[filename, pathname] = uigetfile({'*.ascii'; '*.txt'; '*.ascii'}, text{channel});
+[filename, pathname] = uigetfile({'*.ascii;*.mat'; '*.*'}, text{channel});
 end
 if pathname ~= 0
-A = importdata([pathname filename]);
+    if all(filename(end-3:end) == '.mat')
+        load([pathname filename], 'A');
+    else
+        A = importdata([pathname filename]);
+    end
 
 if isstruct(A)
 A = A.data;
 end
-
+A = adjustformat(A, 1);
 handles.folder = pathname;
 handles.AB{channel} = A;
 handles.ABmasked{channel} = A;
@@ -1821,7 +1844,7 @@ A = A.data;
 end
 
 % adjust the format to the standard
-A = adjustformat(A, 5);
+A = adjustformat(A, 2);
 
 handles.folder = pathname;
 handles.AB{channel} = A;
@@ -1861,7 +1884,7 @@ A = A.data;
 end
 
 % adjust the format to the standard
-A = adjustformat(A, 6);
+A = adjustformat(A, 7);
 
 handles.folder = pathname;
 handles.AB{channel} = A;
